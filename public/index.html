@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pengajian Akbar Poliwangi 2024</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa 0%, #e8f5e9 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .ornament {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 180px;
+            z-index: 0;
+            background: url('data:image/svg+xml;utf8,<svg width="100%25" height="100%25" viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="%23218c74" fill-opacity="0.13" d="M0,160L60,170.7C120,181,240,203,360,197.3C480,192,600,160,720,133.3C840,107,960,85,1080,101.3C1200,117,1320,171,1380,197.3L1440,224L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path></svg>') no-repeat top center;
+            background-size: cover;
+        }
+        
+        .header-acara {
+            text-align: center;
+            margin-top: 48px;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header-acara .icon-masjid {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+        }
+        
+        .header-acara h1 {
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: #218c74;
+            font-size: 2.2em;
+            margin-bottom: 8px;
+        }
+        
+        .header-acara h2 {
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: #3867d6;
+            font-size: 1.2em;
+            margin: 0 0 10px 0;
+        }
+        
+        .header-acara p {
+            color: #444;
+            font-size: 1.08em;
+            margin-bottom: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto 0 auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 6px 32px rgba(33, 140, 116, 0.10), 0 1.5px 6px rgba(56, 103, 214, 0.08);
+            padding: 36px 28px 28px 28px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .nav-buttons {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        
+        .btn {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 14px 32px;
+            background: linear-gradient(90deg, #218c74 60%, #3867d6 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.15em;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(33, 140, 116, 0.08);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(90deg, #3867d6 60%, #218c74 100%);
+            box-shadow: 0 4px 16px rgba(56, 103, 214, 0.10);
+        }
+        
+        .divisions-section {
+            margin-top: 40px;
+        }
+        
+        .divisions-section h2 {
+            color: #218c74;
+            font-family: 'Montserrat', Arial, sans-serif;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+        
+        .divisions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+        
+        .division-card {
+            border: 2.5px solid #218c74;
+            border-radius: 16px;
+            padding: 24px 18px 18px 18px;
+            background: #f9fefb;
+            box-shadow: 0 2px 12px rgba(33, 140, 116, 0.07);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        
+        .division-card:before {
+            content: '';
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 48px;
+            height: 48px;
+            background: url('data:image/svg+xml;utf8,<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="24" fill="%23218c74" fill-opacity="0.13"/><path d="M24 12L28 20H20L24 12Z" fill="%233867d6"/><circle cx="24" cy="30" r="4" fill="%23ffd700"/></svg>') no-repeat center center;
+            background-size: contain;
+        }
+        
+        .division-card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .division-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .division-name {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: #218c74;
+        }
+        
+        .division-status {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .status-open {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-full {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-closed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .division-description {
+            color: #666;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .division-details {
+            font-size: 0.97em;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        
+        .division-requirements {
+            margin-bottom: 10px;
+        }
+        
+        .requirements-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #218c74;
+        }
+        
+        .requirements-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .requirements-list li {
+            padding: 2px 0;
+            color: #666;
+        }
+        
+        .requirements-list li:before {
+            content: "• ";
+            color: #3867d6;
+        }
+        
+        .division-action {
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .btn-register {
+            background: linear-gradient(90deg, #27ae60 60%, #218c74 100%);
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-weight: 600;
+            margin-top: 4px;
+            transition: background 0.2s;
+        }
+        
+        .btn-register:hover {
+            background: linear-gradient(90deg, #218c74 60%, #27ae60 100%);
+        }
+        
+        .btn-register:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .loading,
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        @media (max-width: 700px) {
+            .container {
+                padding: 8px;
+            }
+            .divisions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ornament"></div>
+    <div class="header-acara">
+        <div class="icon-masjid">
+            <!-- SVG Icon Masjid -->
+            <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="30" cy="30" r="30" fill="#218c74" fill-opacity="0.13"/>
+                <path d="M30 15L38 30H22L30 15Z" fill="#3867d6"/>
+                <rect x="25" y="30" width="10" height="10" rx="2" fill="#ffd700"/>
+                <rect x="28" y="36" width="4" height="8" rx="1.5" fill="#218c74"/>
+            </svg>
+        </div>
+        <h1>Pengajian Akbar Poliwangi 2024</h1>
+        <h2>Pendaftaran Kepanitiaan</h2>
+        <p>Jadilah bagian dari kepanitiaan Pengajian Akbar Poliwangi!<br>Kontribusi Anda sangat berarti untuk suksesnya acara ini.</p>
+    </div>
+    <div class="container">
+        <div class="nav-buttons">
+            <a href="daftar.html" class="btn">Daftar sebagai Panitia</a>
+            <a href="admin.html" class="btn">Login Admin</a>
+        </div>
+        <div class="divisions-section">
+            <h2>Divisi yang Tersedia</h2>
+            <div id="divisionsList">
+                <div class="loading">Memuat divisi...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadDivisions() {
+            try {
+                const response = await fetch('/api/divisions/active');
+                if (!response.ok) throw new Error('Gagal memuat data');
+                const divisions = await response.json();
+                const container = document.getElementById('divisionsList');
+                if (!Array.isArray(divisions) || divisions.length === 0) {
+                    container.innerHTML = '<div class="empty">Belum ada divisi yang tersedia untuk pendaftaran.</div>';
+                    return;
+                }
+                let html = '<div class="divisions-grid">';
+                divisions.forEach(division => {
+                            const isExpired = division.isExpired;
+                            const isFull = division.isFull;
+                            const isOpen = division.isOpenForRegistration;
+                            let statusClass = 'status-open';
+                            let statusText = 'Terbuka';
+                            if (isExpired) {
+                                statusClass = 'status-closed';
+                                statusText = 'Ditutup';
+                            } else if (isFull) {
+                                statusClass = 'status-full';
+                                statusText = 'Penuh';
+                            }
+                            const requirements = division.requirements && division.requirements.length > 0 ?
+                                division.requirements.map(req => `<li>${req}</li>`).join('') :
+                                '<li>Tidak ada persyaratan khusus</li>';
+                            html += `
+                        <div class="division-card ${!isOpen ? 'disabled' : ''}">
+                            <div class="division-header">
+                                <div class="division-name">${division.name}</div>
+                                <span class="division-status ${statusClass}">${statusText}</span>
+                            </div>
+                            <div class="division-description">${division.description}</div>
+                            <div class="division-details">
+                                <strong>Kuota:</strong> ${division.currentRegistered}/${division.quota} orang<br>
+                                <strong>Batas Waktu:</strong> ${new Date(division.deadline).toLocaleDateString('id-ID')}
+                            </div>
+                            <div class="division-requirements">
+                                <div class="requirements-title">Persyaratan:</div>
+                                <ul class="requirements-list">
+                                    ${requirements}
+                                </ul>
+                            </div>
+                            <div class="division-action">
+                                ${isOpen ? 
+                                    `<button class="btn-register" onclick="registerToDivision('${division.id}', '${division.name}')">Daftar Sekarang</button>` :
+                                    `<button class="btn-register" disabled>${isExpired ? 'Pendaftaran Ditutup' : 'Kuota Penuh'}</button>`
+                                }
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading divisions:', error);
+                document.getElementById('divisionsList').innerHTML = '<div class="empty">Gagal memuat data divisi.</div>';
+            }
+        }
+        function registerToDivision(divisionId, divisionName) {
+            localStorage.setItem('selectedDivisionId', divisionId);
+            localStorage.setItem('selectedDivisionName', divisionName);
+            window.location.href = 'daftar.html';
+        }
+        loadDivisions();
+    </script>
+</body>
+
+</html>

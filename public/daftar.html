@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pendaftaran Kepanitiaan Pengajian Akbar Poliwangi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa 0%, #e8f5e9 100%);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header-acara {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .header-acara h1 {
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: #218c74;
+            font-size: 2.2em;
+            margin-bottom: 8px;
+        }
+        
+        .header-acara h2 {
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: #3867d6;
+            font-size: 1.3em;
+            margin: 0 0 10px 0;
+        }
+        
+        .header-acara p {
+            color: #444;
+            font-size: 1.05em;
+            margin-bottom: 0;
+        }
+        
+        .container {
+            max-width: 430px;
+            margin: 30px auto 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 32px rgba(33, 140, 116, 0.10), 0 1.5px 6px rgba(56, 103, 214, 0.08);
+            padding: 36px 28px 28px 28px;
+        }
+        
+        h2 {
+            text-align: center;
+            color: #218c74;
+            margin-bottom: 18px;
+            font-family: 'Montserrat', Arial, sans-serif;
+        }
+        
+        .selected-division {
+            background: #e8f4f8;
+            border: 1px solid #2980b9;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .selected-division h4 {
+            margin: 0 0 10px 0;
+            color: #2980b9;
+        }
+        
+        .selected-division p {
+            margin: 5px 0;
+            color: #666;
+        }
+        
+        label {
+            display: block;
+            margin-top: 16px;
+            margin-bottom: 6px;
+            color: #3867d6;
+            font-weight: 600;
+        }
+        
+        input,
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #b2bec3;
+            border-radius: 6px;
+            font-size: 1em;
+            font-family: 'Quicksand', Arial, sans-serif;
+            background: #f9f9f9;
+            transition: border 0.2s;
+        }
+        
+        input:focus,
+        select:focus {
+            border: 1.5px solid #218c74;
+            outline: none;
+        }
+        
+        button {
+            margin-top: 28px;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #218c74 60%, #3867d6 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(33, 140, 116, 0.08);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            background: linear-gradient(90deg, #3867d6 60%, #218c74 100%);
+            box-shadow: 0 4px 16px rgba(56, 103, 214, 0.10);
+        }
+        
+        .message {
+            margin-top: 18px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .success {
+            color: #27ae60;
+        }
+        
+        .error {
+            color: #c0392b;
+        }
+        
+        .back {
+            display: block;
+            margin-top: 18px;
+            text-align: center;
+            color: #3867d6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .required {
+            color: #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-acara">
+        <h1>Pengajian Akbar Poliwangi 2024</h1>
+        <h2>Pendaftaran Kepanitiaan</h2>
+        <p>Bergabunglah menjadi bagian dari kepanitiaan Pengajian Akbar Poliwangi!<br>Kontribusi Anda sangat berarti untuk suksesnya acara ini.</p>
+    </div>
+    <div class="container">
+        <h2>Formulir Pendaftaran</h2>
+
+        <div id="selectedDivisionInfo" class="selected-division" style="display: none;">
+            <h4>Divisi yang Dipilih</h4>
+            <p id="divisionName"></p>
+            <p id="divisionDescription"></p>
+        </div>
+
+        <form id="volunteerForm">
+            <label for="name">Nama <span class="required">*</span></label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="nim">NIM <span class="required">*</span></label>
+            <input type="text" id="nim" name="nim" required>
+
+            <label for="prodi">Prodi <span class="required">*</span></label>
+            <input type="text" id="prodi" name="prodi" required>
+
+            <label for="noHp">No. HP <span class="required">*</span></label>
+            <input type="tel" id="noHp" name="noHp" required>
+
+            <label for="divisionId">Pilihan Divisi <span class="required">*</span></label>
+            <select id="divisionId" name="divisionId" required>
+                <option value="">-- Pilih Divisi --</option>
+            </select>
+
+            <button type="submit">Daftar</button>
+        </form>
+        <div class="message" id="message"></div>
+        <a href="index.html" class="back">&larr; Kembali ke Beranda</a>
+    </div>
+    <script>
+        // Load divisi dari API
+        async function loadDivisions() {
+            const select = document.getElementById('divisionId');
+            select.innerHTML = '<option value="">-- Pilih Divisi --</option>';
+            try {
+                const res = await fetch('/api/divisions/active');
+                const divisions = await res.json();
+                divisions.forEach(div => {
+                    if (div.isOpenForRegistration) {
+                        const opt = document.createElement('option');
+                        opt.value = div.id;
+                        opt.textContent = div.name + ' (Kuota: ' + (div.quota - div.currentRegistered) + ')';
+                        select.appendChild(opt);
+                    }
+                });
+            } catch (err) {
+                select.innerHTML = '<option value="">Gagal memuat divisi</option>';
+            }
+        }
+        loadDivisions();
+
+        document.getElementById('volunteerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const nim = document.getElementById('nim').value;
+            const prodi = document.getElementById('prodi').value;
+            const noHp = document.getElementById('noHp').value;
+            const divisionId = document.getElementById('divisionId').value;
+            const messageDiv = document.getElementById('message');
+            const submitButton = document.querySelector('button[type="submit"]');
+            messageDiv.textContent = '';
+            messageDiv.className = 'message';
+            submitButton.disabled = true;
+            submitButton.textContent = 'Mendaftar...';
+            try {
+                const response = await fetch('/api/volunteers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        nim,
+                        prodi,
+                        noHp,
+                        divisionId
+                    })
+                });
+                if (response.ok) {
+                    messageDiv.textContent = 'Pendaftaran berhasil!';
+                    messageDiv.classList.add('success');
+                    document.getElementById('volunteerForm').reset();
+                } else {
+                    const data = await response.json();
+                    messageDiv.textContent = data.message || 'Pendaftaran gagal. Silakan coba lagi.';
+                    messageDiv.classList.add('error');
+                }
+            } catch (err) {
+                messageDiv.textContent = 'Terjadi kesalahan jaringan.';
+                messageDiv.classList.add('error');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Daftar';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Manajemen Divisi - Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 32px 24px 24px 24px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: #2980b9;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #c0392b;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.8;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .requirements-container {
+            margin-top: 10px;
+        }
+        
+        .requirement-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .requirement-item input {
+            flex: 1;
+        }
+        
+        .requirement-item button {
+            padding: 5px 10px;
+            background: #c0392b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px 8px;
+            text-align: left;
+        }
+        
+        th {
+            background: #2980b9;
+            color: #fff;
+        }
+        
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+        
+        tr:hover {
+            background: #e8f4f8;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-full {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-expired {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Manajemen Divisi</h2>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="openModal()">Tambah Divisi</button>
+                <button class="btn btn-success" onclick="exportData()">Export Data</button>
+                <a href="dashboard.html" class="btn btn-primary">Dashboard</a>
+                <a href="#" class="btn btn-danger" onclick="logout()">Logout</a>
+            </div>
+        </div>
+
+        <div id="divisionsList"></div>
+    </div>
+
+    <!-- Modal untuk tambah/edit divisi -->
+    <div id="divisionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Tambah Divisi Baru</h3>
+
+            <form id="divisionForm">
+                <input type="hidden" id="divisionId">
+
+                <div class="form-group">
+                    <label for="name">Nama Divisi *</label>
+                    <input type="text" id="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Deskripsi *</label>
+                    <textarea id="description" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="quota">Kuota *</label>
+                    <input type="number" id="quota" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="deadline">Batas Waktu *</label>
+                    <input type="datetime-local" id="deadline" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Persyaratan</label>
+                    <div class="requirements-container">
+                        <div id="requirementsList"></div>
+                        <button type="button" onclick="addRequirement()" class="btn btn-primary">Tambah Persyaratan</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="isActive" checked>
+                        Aktif
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" onclick="closeModal()" class="btn btn-danger">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Cek autentikasi
+        function checkAuth() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                alert('Silakan login terlebih dahulu!');
+                window.location.href = 'admin.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminData');
+            window.location.href = 'admin.html';
+        }
+
+        // Load divisions
+        async function loadDivisions() {
+            if (!checkAuth()) return;
+
+            const container = document.getElementById('divisionsList');
+            container.innerHTML = '<div class="loading">Memuat data divisi...</div>';
+
+            try {
+                const response = await fetch('/api/divisions');
+                if (!response.ok) throw new Error('Gagal memuat data');
+
+                const divisions = await response.json();
+
+                if (!Array.isArray(divisions) || divisions.length === 0) {
+                    container.innerHTML = '<div class="empty">Belum ada divisi yang dibuat.</div>';
+                    return;
+                }
+
+                let html = `
+                    <table>
+                        <tr>
+                            <th>Nama Divisi</th>
+                            <th>Deskripsi</th>
+                            <th>Kuota</th>
+                            <th>Terdaftar</th>
+                            <th>Batas Waktu</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                `;
+
+                divisions.forEach(division => {
+                    const deadline = new Date(division.deadline);
+                    const isExpired = new Date() > deadline;
+                    const isFull = division.currentRegistered >= division.quota;
+                    const isActive = division.isActive;
+
+                    let statusClass = 'status-active';
+                    let statusText = 'Aktif';
+
+                    if (!isActive) {
+                        statusClass = 'status-inactive';
+                        statusText = 'Tidak Aktif';
+                    } else if (isExpired) {
+                        statusClass = 'status-expired';
+                        statusText = 'Berakhir';
+                    } else if (isFull) {
+                        statusClass = 'status-full';
+                        statusText = 'Penuh';
+                    }
+
+                    html += `
+                        <tr>
+                            <td>${division.name}</td>
+                            <td>${division.description}</td>
+                            <td>${division.quota}</td>
+                            <td>${division.currentRegistered}</td>
+                            <td>${deadline.toLocaleString('id-ID')}</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                            <td>
+                                <button class="btn btn-primary" onclick="editDivision('${division.id}')">Edit</button>
+                                <button class="btn btn-danger" onclick="deleteDivision('${division.id}')">Hapus</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += '</table>';
+                container.innerHTML = html;
+
+            } catch (error) {
+                console.error('Error loading divisions:', error);
+                container.innerHTML = '<div class="empty">Gagal memuat data divisi.</div>';
+            }
+        }
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('divisionModal').style.display = 'block';
+            document.getElementById('modalTitle').textContent = 'Tambah Divisi Baru';
+            document.getElementById('divisionForm').reset();
+            document.getElementById('divisionId').value = '';
+            document.getElementById('requirementsList').innerHTML = '';
+            addRequirement(); // Add one empty requirement field
+        }
+
+        function closeModal() {
+            document.getElementById('divisionModal').style.display = 'none';
+        }
+
+        function addRequirement() {
+            const container = document.getElementById('requirementsList');
+            const div = document.createElement('div');
+            div.className = 'requirement-item';
+            div.innerHTML = `
+                <input type="text" placeholder="Masukkan persyaratan">
+                <button type="button" onclick="this.parentElement.remove()">Hapus</button>
+            `;
+            container.appendChild(div);
+        }
+
+        // Form submission
+        document.getElementById('divisionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('divisionId').value;
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const quota = document.getElementById('quota').value;
+            const deadline = document.getElementById('deadline').value;
+            const isActive = document.getElementById('isActive').checked;
+
+            // Get requirements
+            const requirementInputs = document.querySelectorAll('#requirementsList input');
+            const requirements = Array.from(requirementInputs)
+                .map(input => input.value.trim())
+                .filter(value => value !== '');
+
+            const divisionData = {
+                name,
+                description,
+                quota: parseInt(quota),
+                deadline: new Date(deadline).toISOString(),
+                requirements,
+                isActive
+            };
+
+            try {
+                const url = id ? `/api/divisions/${id}` : '/api/divisions';
+                const method = id ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(divisionData)
+                });
+
+                if (response.ok) {
+                    closeModal();
+                    loadDivisions();
+                    alert(id ? 'Divisi berhasil diperbarui!' : 'Divisi berhasil dibuat!');
+                } else {
+                    const error = await response.json();
+                    alert(error.message || 'Terjadi kesalahan');
+                }
+            } catch (error) {
+                console.error('Error saving division:', error);
+                alert('Terjadi kesalahan saat menyimpan divisi');
+            }
+        });
+
+        // Edit division
+        async function editDivision(id) {
+            try {
+                const response = await fetch(`/api/divisions/${id}`);
+                if (!response.ok) throw new Error('Gagal memuat data divisi');
+
+                const division = await response.json();
+
+                document.getElementById('divisionId').value = division.id;
+                document.getElementById('name').value = division.name;
+                document.getElementById('description').value = division.description;
+                document.getElementById('quota').value = division.quota;
+                document.getElementById('deadline').value = new Date(division.deadline).toISOString().slice(0, 16);
+                document.getElementById('isActive').checked = division.isActive;
+
+                // Set requirements
+                document.getElementById('requirementsList').innerHTML = '';
+                if (division.requirements && division.requirements.length > 0) {
+                    division.requirements.forEach(req => {
+                        const div = document.createElement('div');
+                        div.className = 'requirement-item';
+                        div.innerHTML = `
+                            <input type="text" value="${req}" placeholder="Masukkan persyaratan">
+                            <button type="button" onclick="this.parentElement.remove()">Hapus</button>
+                        `;
+                        document.getElementById('requirementsList').appendChild(div);
+                    });
+                } else {
+                    addRequirement();
+                }
+
+                document.getElementById('modalTitle').textContent = 'Edit Divisi';
+                openModal();
+
+            } catch (error) {
+                console.error('Error loading division:', error);
+                alert('Gagal memuat data divisi');
+            }
+        }
+
+        // Delete division
+        async function deleteDivision(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus divisi ini?')) return;
+
+            try {
+                const response = await fetch(`/api/divisions/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    loadDivisions();
+                    alert('Divisi berhasil dihapus!');
+                } else {
+                    alert('Gagal menghapus divisi');
+                }
+            } catch (error) {
+                console.error('Error deleting division:', error);
+                alert('Terjadi kesalahan saat menghapus divisi');
+            }
+        }
+
+        // Export data
+        function exportData() {
+            window.open('/api/divisions/export/csv', '_blank');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('divisionModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Load divisions when page loads
+        loadDivisions();
+    </script>
+</body>
+
+</html>

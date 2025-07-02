@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 350px;
+            margin: 80px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 32px 24px 24px 24px;
+        }
+        
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        
+        label {
+            display: block;
+            margin-top: 16px;
+            margin-bottom: 6px;
+            color: #34495e;
+        }
+        
+        input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        
+        button {
+            margin-top: 24px;
+            width: 100%;
+            padding: 10px;
+            background: #2980b9;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        button:hover {
+            background: #1c5d85;
+        }
+        
+        .message {
+            margin-top: 18px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .error {
+            color: #c0392b;
+        }
+        
+        .success {
+            color: #27ae60;
+        }
+        
+        .back {
+            display: block;
+            margin-top: 18px;
+            text-align: center;
+            color: #2980b9;
+            text-decoration: none;
+        }
+        
+        .credentials {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Login Admin</h2>
+        <form id="loginForm">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+        <div class="message" id="message"></div>
+
+        <div class="credentials">
+            <strong>Kredensial Default:</strong><br> Email: admin@volunteer.com<br> Password: admin123
+        </div>
+
+        <a href="index.html" class="back">&larr; Kembali ke Beranda</a>
+    </div>
+    <script>
+        // Inisialisasi admin default saat halaman dimuat
+        async function initializeAdmin() {
+            try {
+                const response = await fetch('/api/admin/init', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                console.log(data.message);
+            } catch (error) {
+                console.error('Error initializing admin:', error);
+            }
+        }
+
+        // Panggil fungsi inisialisasi saat halaman dimuat
+        initializeAdmin();
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('message');
+            const submitButton = document.querySelector('button[type="submit"]');
+
+            messageDiv.textContent = '';
+            messageDiv.className = 'message';
+            submitButton.disabled = true;
+            submitButton.textContent = 'Logging in...';
+
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageDiv.textContent = 'Login berhasil! Mengalihkan...';
+                    messageDiv.classList.add('success');
+
+                    // Simpan token ke localStorage
+                    localStorage.setItem('adminToken', data.token);
+                    localStorage.setItem('adminData', JSON.stringify(data.admin));
+
+                    // Redirect ke dashboard setelah 1 detik
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                } else {
+                    messageDiv.textContent = data.message || 'Login gagal!';
+                    messageDiv.classList.add('error');
+                }
+            } catch (error) {
+                messageDiv.textContent = 'Terjadi kesalahan saat login!';
+                messageDiv.classList.add('error');
+                console.error('Error:', error);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Login';
+            }
+        });
+    </script>
+</body>
+
+</html>
