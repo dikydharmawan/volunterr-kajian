@@ -187,8 +187,9 @@ export async function loginAdmin(req: Request, res: Response) {
             // Hapus password dari response
             const adminData = admin as any;
             const { password: _, ...adminWithoutPassword } = adminData;
-            res.json({ 
-                message: 'Login berhasil', 
+            res.json({
+                success: true,
+                message: 'Login berhasil',
                 admin: adminWithoutPassword,
                 token: 'admin-token-' + Date.now() // Simple token untuk demo
             });

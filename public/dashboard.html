@@ -494,16 +494,6 @@
     </div>
 
     <script>
-        function checkAuth() {
-            const token = localStorage.getItem('adminToken');
-            if (!token) {
-                alert('Silakan login terlebih dahulu!');
-                window.location.href = 'admin.html';
-                return false;
-            }
-            return true;
-        }
-
         function logout() {
             localStorage.removeItem('adminToken');
             localStorage.removeItem('adminData');

@@ -10,6 +10,7 @@ export function setAdminRoutes(app: Application) {
     // Route untuk login admin
     router.post('/admin/login', (req, res) => adminController.loginAdmin(req, res));
 
+
     // Routes untuk admin
     router.post('/admin', (req, res) => adminController.createAdmin(req, res));
     router.put('/admin/:id', (req, res) => adminController.updateAdmin(req, res));
