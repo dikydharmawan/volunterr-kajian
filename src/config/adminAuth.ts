@@ -4,7 +4,7 @@ import { db } from './firebase';
 export const DEFAULT_ADMIN = {
     email: 'admin@volunteer.com',
     password: 'admin123',
-    name: 'Administrator'
+    name: 'Admin Volunteer'
 };
 
 // Fungsi untuk membuat admin default jika belum ada
@@ -35,9 +35,11 @@ export async function createDefaultAdmin() {
 // Fungsi untuk verifikasi login admin
 export async function verifyAdminLogin(email: string, password: string) {
     try {
+        const trimmedEmail = email.trim();
+        const trimmedPassword = password.trim();
         const snapshot = await db.collection('admins')
-            .where('email', '==', email)
-            .where('password', '==', password)
+            .where('email', '==', trimmedEmail)
+            .where('password', '==', trimmedPassword)
             .get();
 
         if (!snapshot.empty) {
@@ -47,6 +49,8 @@ export async function verifyAdminLogin(email: string, password: string) {
                 ...adminDoc.data()
             };
         }
+        // Tambahkan log untuk debugging
+        console.log('Login gagal. Email atau password salah.', { email: trimmedEmail, password: trimmedPassword });
         return null;
     } catch (error) {
         console.error('Error verifying admin login:', error);

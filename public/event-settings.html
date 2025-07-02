@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Setting Acara - Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+        
+        .event-settings-container {
+            max-width: 480px;
+            margin: 2.5rem auto 0 auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(60, 60, 120, 0.15);
+            padding: 2.5rem 2rem 2rem 2rem;
+            animation: fadeInDown 1s;
+        }
+        
+        .event-settings-container h2 {
+            text-align: center;
+            color: #1a3a5d;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #1a3a5d;
+            font-weight: 500;
+        }
+        
+        .input-icon {
+            position: relative;
+        }
+        
+        .input-icon i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f53ac;
+            font-size: 1.1rem;
+        }
+        
+        .input-icon input,
+        .input-icon textarea {
+            width: 100%;
+            padding: 0.7rem 1rem 0.7rem 2.2rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.2s;
+            box-sizing: border-box;
+            resize: none;
+        }
+        
+        .input-icon input:focus,
+        .input-icon textarea:focus {
+            border: 1.5px solid #7f53ac;
+            outline: none;
+        }
+        
+        .save-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(90deg, #7f53ac 0%, #647dee 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+        
+        .save-btn:hover {
+            background: linear-gradient(90deg, #647dee 0%, #7f53ac 100%);
+        }
+        
+        .notif {
+            color: #fff;
+            background: #7f53ac;
+            border-radius: 6px;
+            padding: 0.7rem;
+            margin-top: 1.2rem;
+            font-size: 0.98rem;
+            text-align: center;
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .event-settings-container {
+                padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+                max-width: 98vw;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="event-settings-container animate__animated animate__fadeInDown">
+        <h2><i class="fa-solid fa-calendar-days"></i> Setting Acara</h2>
+        <form id="eventSettingsForm">
+            <div class="input-group">
+                <label for="eventDate">Tanggal & Waktu</label>
+                <div class="input-icon">
+                    <i class="fa fa-calendar"></i>
+                    <input type="text" id="eventDate" name="eventDate" placeholder="Contoh: Sabtu, 20 Juli 2024, 08.00 - 12.00 WIB" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="eventPlace">Tempat</label>
+                <div class="input-icon">
+                    <i class="fa fa-location-dot"></i>
+                    <input type="text" id="eventPlace" name="eventPlace" placeholder="Contoh: Aula Politeknik Negeri Banyuwangi" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="eventDesc">Deskripsi Acara</label>
+                <div class="input-icon">
+                    <i class="fa fa-book-quran"></i>
+                    <textarea id="eventDesc" name="eventDesc" rows="4" placeholder="Deskripsi singkat acara..." required></textarea>
+                </div>
+            </div>
+            <button type="submit" class="save-btn"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+        </form>
+        <div class="notif animate__animated" id="notif"></div>
+    </div>
+    <script>
+        document.getElementById('eventSettingsForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const notif = document.getElementById('notif');
+            notif.style.display = 'none';
+            notif.textContent = '';
+            // Placeholder: Kirim data ke backend di sini
+            notif.textContent = 'Pengaturan acara berhasil disimpan! (Simulasi)';
+            notif.style.display = 'block';
+            notif.className = 'notif animate__animated animate__fadeIn';
+            setTimeout(() => {
+                notif.classList.add('animate__fadeOut');
+                setTimeout(() => notif.style.display = 'none', 800);
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>

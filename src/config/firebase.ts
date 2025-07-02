@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin';
 import path from 'path';
 
 // Path ke file service account
-const serviceAccountPath = path.join(__dirname, '../../pendaftaran-volunterr-firebase-adminsdk-fbsvc-bc2cea7c02.json');
+const serviceAccountPath = 'D:/Coba/volunter/volunteer-management-app/firebase-key.json';
 
 // Inisialisasi Firebase Admin SDK
 const serviceAccount = require(serviceAccountPath);
@@ -17,5 +17,6 @@ if (!admin.apps.length) {
 
 // Export instance Firebase Admin
 export const db = admin.firestore();
+export const firestore = admin.firestore();
 export const auth = admin.auth();
 export default admin; 

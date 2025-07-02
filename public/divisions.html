@@ -5,215 +5,157 @@
     <meta charset="UTF-8">
     <title>Manajemen Divisi - Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            min-height: 100vh;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
+        .divisions-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1rem 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+        
+        .divisions-hero {
             background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            padding: 32px 24px 24px 24px;
-        }
-        
-        .header {
+            border-radius: 22px;
+            box-shadow: 0 8px 32px rgba(60, 60, 120, 0.13);
+            padding: 2.5rem 2rem 2.2rem 2rem;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+            gap: 2.2rem;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 1s;
         }
         
-        h2 {
-            color: #2c3e50;
+        .divisions-hero-icon {
+            font-size: 3.5rem;
+            color: #7f53ac;
+            background: #f3eaff;
+            border-radius: 50%;
+            padding: 1.1rem 1.2rem;
+            box-shadow: 0 2px 12px rgba(127, 83, 172, 0.08);
+            margin-right: 0.5rem;
+        }
+        
+        .divisions-hero-content h1 {
+            font-size: 2rem;
+            color: #1a3a5d;
+            font-weight: 700;
+            margin: 0 0 0.7rem 0;
+        }
+        
+        .divisions-hero-content p {
+            font-size: 1.1rem;
+            color: #555;
             margin: 0;
         }
         
-        .nav-buttons {
+        .divisions-cards {
             display: flex;
-            gap: 10px;
             flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
         }
         
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9em;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-        
-        .btn-primary {
-            background: #2980b9;
-            color: white;
-        }
-        
-        .btn-success {
-            background: #27ae60;
-            color: white;
-        }
-        
-        .btn-danger {
-            background: #c0392b;
-            color: white;
-        }
-        
-        .btn:hover {
-            opacity: 0.8;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 600px;
-        }
-        
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .close:hover {
-            color: black;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        input,
-        textarea,
-        select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        
-        .requirements-container {
-            margin-top: 10px;
-        }
-        
-        .requirement-item {
+        .division-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(60, 60, 120, 0.10);
+            min-width: 240px;
+            max-width: 320px;
+            flex: 1 1 260px;
+            padding: 1.5rem 1.2rem 1.2rem 1.2rem;
             display: flex;
-            gap: 10px;
-            margin-bottom: 5px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.7rem;
+            animation: fadeInUp 1.2s;
         }
         
-        .requirement-item input {
-            flex: 1;
+        .division-card .division-card-icon {
+            font-size: 2.1rem;
+            color: #218c74;
+            background: #e0f7fa;
+            border-radius: 50%;
+            padding: 0.7rem 0.8rem;
+            margin-bottom: 0.2rem;
+            box-shadow: 0 2px 8px rgba(33, 140, 116, 0.08);
         }
         
-        .requirement-item button {
-            padding: 5px 10px;
-            background: #c0392b;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        .division-card .division-card-title {
+            font-size: 1.13rem;
+            color: #7f53ac;
+            font-weight: 600;
+            margin-bottom: 0.1rem;
         }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        .division-card .division-card-value {
+            font-size: 1.08rem;
+            color: #222;
+            font-weight: 500;
         }
         
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 12px 8px;
-            text-align: left;
+        @media (max-width: 900px) {
+            .divisions-container {
+                padding: 1.2rem 0.2rem 1.2rem 0.2rem;
+            }
+            .divisions-hero {
+                flex-direction: column;
+                gap: 1.2rem;
+                text-align: center;
+            }
+            .divisions-cards {
+                flex-direction: column;
+                gap: 1rem;
+            }
         }
         
-        th {
-            background: #2980b9;
-            color: #fff;
-        }
-        
-        tr:nth-child(even) {
-            background: #f2f2f2;
-        }
-        
-        tr:hover {
-            background: #e8f4f8;
-        }
-        
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            font-weight: bold;
-        }
-        
-        .status-active {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .status-inactive {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .status-full {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
-        .status-expired {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-        
-        .empty {
-            text-align: center;
-            padding: 40px;
-            color: #888;
+        @media (max-width: 600px) {
+            .divisions-container {
+                padding: 0.5rem 0.1rem 0.5rem 0.1rem;
+            }
+            .divisions-hero {
+                padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+            }
+            .division-card {
+                padding: 1rem 0.7rem;
+                min-width: unset;
+                max-width: 98vw;
+            }
         }
     </style>
 </head>
 
 <body>
+    <div class="divisions-container">
+        <div class="divisions-hero animate__animated animate__fadeInDown">
+            <i class="fa-solid fa-layer-group divisions-hero-icon"></i>
+            <div class="divisions-hero-content">
+                <h1>Divisi Volunteer</h1>
+                <p>Lihat daftar divisi yang tersedia untuk volunteer. Pilih divisi yang sesuai dengan minat dan keahlianmu!</p>
+            </div>
+        </div>
+        <div class="divisions-cards animate__animated animate__fadeInUp">
+            <!-- Card divisi, isi dinamis dari backend -->
+            <div class="division-card">
+                <i class="fa-solid fa-people-group division-card-icon"></i>
+                <div class="division-card-title">Divisi Contoh</div>
+                <div class="division-card-value">Deskripsi singkat divisi.</div>
+            </div>
+            <!-- Tambahkan card divisi lain secara dinamis -->
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h2>Manajemen Divisi</h2>

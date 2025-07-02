@@ -6,29 +6,36 @@
     <title>Dashboard Admin - Pengajian Akbar Poliwangi</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            transition: all 0.3s ease-in-out;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Quicksand', Arial, sans-serif;
-            background: linear-gradient(135deg, #e0f7fa 0%, #e8f5e9 100%);
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
             margin: 0;
-            padding: 0;
+            min-height: 100vh;
         }
         
         .header-acara {
             text-align: center;
             margin-top: 32px;
-            margin-bottom: 0;
         }
         
         .header-acara h1 {
-            font-family: 'Montserrat', Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             color: #218c74;
-            font-size: 2em;
+            font-size: 2.2em;
             margin-bottom: 6px;
         }
         
         .header-acara h2 {
-            font-family: 'Montserrat', Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             color: #3867d6;
             font-size: 1.1em;
             margin: 0 0 10px 0;
@@ -36,11 +43,11 @@
         
         .container {
             max-width: 1100px;
-            margin: 30px auto 0 auto;
+            margin: 30px auto;
             background: #fff;
-            border-radius: 16px;
+            border-radius: 18px;
             box-shadow: 0 6px 32px rgba(33, 140, 116, 0.10), 0 1.5px 6px rgba(56, 103, 214, 0.08);
-            padding: 36px 28px 28px 28px;
+            padding: 36px 28px;
         }
         
         .header {
@@ -53,103 +60,7 @@
         
         h2 {
             color: #218c74;
-            margin: 0;
-            font-family: 'Montserrat', Arial, sans-serif;
-        }
-        
-        .logout {
-            color: #c0392b;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 8px 16px;
-            border: 1px solid #c0392b;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-        
-        .logout:hover {
-            background: #c0392b;
-            color: white;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 24px;
-            background: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        th,
-        td {
-            border: 1px solid #e0e0e0;
-            padding: 12px 8px;
-            text-align: left;
-        }
-        
-        th {
-            background: #218c74;
-            color: #fff;
-            font-family: 'Montserrat', Arial, sans-serif;
-            font-weight: 700;
-        }
-        
-        tr:nth-child(even) {
-            background: #f2f2f2;
-        }
-        
-        tr:hover {
-            background: #e8f4f8;
-        }
-        
-        .empty,
-        .loading {
-            text-align: center;
-            color: #888;
-            padding: 40px;
-        }
-        
-        .status {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.9em;
-            font-weight: bold;
-        }
-        
-        .status.active {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .status.inactive {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .action-btn {
-            padding: 4px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9em;
-            margin: 2px;
-            font-family: 'Montserrat', Arial, sans-serif;
-        }
-        
-        .btn-approve {
-            background: #28a745;
-            color: white;
-        }
-        
-        .btn-reject {
-            background: #dc3545;
-            color: white;
-        }
-        
-        .btn-delete {
-            background: #c0392b;
-            color: white;
+            font-family: 'Montserrat', sans-serif;
         }
         
         .nav-buttons {
@@ -159,17 +70,32 @@
         }
         
         .btn {
-            padding: 8px 16px;
+            padding: 10px 18px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 0.95em;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            font-family: 'Montserrat', Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            transition: background 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.4);
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: 0.3s;
+        }
+        
+        .btn:hover::after {
+            opacity: 1;
         }
         
         .btn-primary {
@@ -187,45 +113,373 @@
             color: white;
         }
         
-        .btn:hover {
-            opacity: 0.9;
-            box-shadow: 0 2px 8px rgba(33, 140, 116, 0.10);
+        .logout {
+            color: #c0392b;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            animation: fadeInUp 0.8s;
+        }
+        
+        th,
+        td {
+            border: 1px solid #e0e0e0;
+            padding: 12px 8px;
+            text-align: left;
+        }
+        
+        th {
+            background: #218c74;
+            color: #fff;
+            font-weight: 700;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        tr:hover {
+            background: #e0f7fa;
+        }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-btn {
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+        
+        .btn-delete {
+            background: #c0392b;
+            color: white;
+        }
+        
+        .event-detail-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-top: 20px;
+        }
+        
+        .event-card {
+            flex: 1 1 200px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(33, 140, 116, 0.15);
+            padding: 18px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            animation: fadeInUp 0.8s;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 6px 18px rgba(33, 140, 116, 0.2);
+        }
+        
+        .event-card .icon {
+            font-size: 1.6em;
+            color: #218c74;
+            margin-top: 2px;
+        }
+        
+        .event-info-text {
+            font-size: 1em;
+            color: #333;
+        }
+        
+        input,
+        textarea {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1.5px solid #218c74;
+            width: 100%;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        input:focus,
+        textarea:focus {
+            border-color: #3867d6;
+            box-shadow: 0 0 0 3px rgba(56, 103, 214, 0.15);
+            outline: none;
+        }
+        
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 700px) {
+            .event-detail-cards {
+                flex-direction: column;
+            }
+        }
+        
+        .dashboard-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1rem 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+        
+        .dashboard-hero {
+            background: #fff;
+            border-radius: 22px;
+            box-shadow: 0 8px 32px rgba(60, 60, 120, 0.13);
+            padding: 2.5rem 2rem 2.2rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2.2rem;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 1s;
+        }
+        
+        .dashboard-hero-icon {
+            font-size: 3.5rem;
+            color: #7f53ac;
+            background: #f3eaff;
+            border-radius: 50%;
+            padding: 1.1rem 1.2rem;
+            box-shadow: 0 2px 12px rgba(127, 83, 172, 0.08);
+            margin-right: 0.5rem;
+        }
+        
+        .dashboard-hero-content h1 {
+            font-size: 2rem;
+            color: #1a3a5d;
+            font-weight: 700;
+            margin: 0 0 0.7rem 0;
+        }
+        
+        .dashboard-hero-content p {
+            font-size: 1.1rem;
+            color: #555;
+            margin: 0;
+        }
+        
+        .dashboard-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+        
+        .dashboard-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(60, 60, 120, 0.10);
+            min-width: 240px;
+            max-width: 320px;
+            flex: 1 1 260px;
+            padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.7rem;
+            animation: fadeInUp 1.2s;
+        }
+        
+        .dashboard-card .dashboard-card-icon {
+            font-size: 2.1rem;
+            color: #647dee;
+            background: #eaf0ff;
+            border-radius: 50%;
+            padding: 0.7rem 0.8rem;
+            margin-bottom: 0.2rem;
+            box-shadow: 0 2px 8px rgba(100, 125, 222, 0.08);
+        }
+        
+        .dashboard-card .dashboard-card-title {
+            font-size: 1.13rem;
+            color: #7f53ac;
+            font-weight: 600;
+            margin-bottom: 0.1rem;
+        }
+        
+        .dashboard-card .dashboard-card-value {
+            font-size: 1.08rem;
+            color: #222;
+            font-weight: 500;
         }
         
         @media (max-width: 900px) {
-            .container {
-                padding: 10px;
+            .dashboard-container {
+                padding: 1.2rem 0.2rem 1.2rem 0.2rem;
             }
-            table,
-            th,
-            td {
-                font-size: 0.95em;
+            .dashboard-hero {
+                flex-direction: column;
+                gap: 1.2rem;
+                text-align: center;
+            }
+            .dashboard-cards {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
         
         @media (max-width: 600px) {
-            .container {
-                padding: 2px;
+            .dashboard-container {
+                padding: 0.5rem 0.1rem 0.5rem 0.1rem;
             }
-            .header {
+            .dashboard-hero {
+                padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+            }
+            .dashboard-card {
+                padding: 1rem 0.7rem;
+                min-width: unset;
+                max-width: 98vw;
+            }
+        }
+        
+        .dashboard-menu {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .dashboard-menu-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(60, 60, 120, 0.10);
+            padding: 2rem 2.5rem;
+            text-align: center;
+            color: #7f53ac;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: box-shadow 0.2s, color 0.2s;
+        }
+        
+        .dashboard-menu-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .dashboard-menu-card:hover {
+            box-shadow: 0 8px 32px rgba(100, 125, 222, 0.15);
+            color: #647dee;
+        }
+        
+        @media (max-width: 600px) {
+            .dashboard-menu {
                 flex-direction: column;
-                gap: 10px;
+                gap: 1.2rem;
+                align-items: center;
             }
-            table,
-            th,
-            td {
-                font-size: 0.9em;
+            .dashboard-menu-card {
+                width: 90vw;
+                padding: 1.2rem 0.5rem;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="header-acara">
+    <div class="dashboard-container">
+        <div class="dashboard-hero animate__animated animate__fadeInDown">
+            <i class="fa-solid fa-gauge-high dashboard-hero-icon"></i>
+            <div class="dashboard-hero-content">
+                <h1>Dashboard Admin</h1>
+                <p>Selamat datang di dashboard admin. Kelola data volunteer, divisi, acara, dan pantau statistik di sini.</p>
+            </div>
+        </div>
+        <div class="dashboard-cards animate__animated animate__fadeInUp">
+            <div class="dashboard-card">
+                <i class="fa-solid fa-users dashboard-card-icon"></i>
+                <div class="dashboard-card-title">Total Volunteer</div>
+                <div class="dashboard-card-value">...</div>
+            </div>
+            <div class="dashboard-card">
+                <i class="fa-solid fa-layer-group dashboard-card-icon"></i>
+                <div class="dashboard-card-title">Total Divisi</div>
+                <div class="dashboard-card-value">...</div>
+            </div>
+            <div class="dashboard-card">
+                <i class="fa-solid fa-calendar-check dashboard-card-icon"></i>
+                <div class="dashboard-card-title">Acara Aktif</div>
+                <div class="dashboard-card-value">...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-menu animate__animated animate__fadeInUp">
+        <a href="divisions.html" class="dashboard-menu-card">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Kelola Divisi</span>
+        </a>
+        <a href="event-settings.html" class="dashboard-menu-card">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Setting Acara</span>
+        </a>
+    </div>
+
+    <div class="header-acara animate__animated animate__fadeInDown">
         <h1>Pengajian Akbar Poliwangi 2024</h1>
         <h2>Dashboard Admin - Kepanitiaan</h2>
     </div>
-    <div class="container">
+    <div class="container animate__animated animate__fadeInUp animate__delay-1s">
+        <h2 style="margin-bottom:18px;">Pengaturan Acara</h2>
+        <form id="event-form" style="background:#e8f5e9; border-radius:12px; padding:18px;">
+            <div style="display:flex; flex-wrap:wrap; gap:18px;">
+                <div style="flex:1 1 220px;">
+                    <label>Nama Acara<br><input type="text" id="event-name" required></label>
+                </div>
+                <div style="flex:1 1 120px;">
+                    <label>Tanggal<br><input type="date" id="event-date" required></label>
+                </div>
+                <div style="flex:1 1 100px;">
+                    <label>Waktu<br><input type="time" id="event-time" required></label>
+                </div>
+                <div style="flex:2 1 180px;">
+                    <label>Tempat<br><input type="text" id="event-location" required></label>
+                </div>
+            </div>
+            <div style="margin-top:12px;">
+                <label>Deskripsi<br><textarea id="event-description" required></textarea></label>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top:12px;">Simpan Acara</button>
+            <span id="event-msg" style="margin-left:18px; font-weight:bold;"></span>
+        </form>
+
         <div class="header">
             <h2>Manajemen Pendaftar</h2>
             <div class="nav-buttons">
@@ -234,10 +488,12 @@
                 <a href="#" class="btn btn-danger" onclick="logout()">Logout</a>
             </div>
         </div>
+
         <div id="volunteerList"></div>
+        <div id="event-detail" class="event-detail-cards"></div>
     </div>
+
     <script>
-        // Cek apakah admin sudah login
         function checkAuth() {
             const token = localStorage.getItem('adminToken');
             if (!token) {
@@ -248,35 +504,10 @@
             return true;
         }
 
-        // Logout function
         function logout() {
             localStorage.removeItem('adminToken');
             localStorage.removeItem('adminData');
             window.location.href = 'admin.html';
-        }
-
-        // Update status volunteer
-        async function updateVolunteerStatus(id, status) {
-            try {
-                const response = await fetch(`/api/volunteers/${id}/status`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        status
-                    })
-                });
-
-                if (response.ok) {
-                    loadVolunteers(); // Reload data
-                } else {
-                    alert('Gagal memperbarui status relawan');
-                }
-            } catch (error) {
-                console.error('Error updating status:', error);
-                alert('Terjadi kesalahan saat memperbarui status');
-            }
         }
 
         async function deleteVolunteer(id) {
@@ -285,11 +516,7 @@
                 const response = await fetch(`/api/volunteers/${id}`, {
                     method: 'DELETE'
                 });
-                if (response.ok) {
-                    loadVolunteers();
-                } else {
-                    alert('Gagal menghapus pendaftar');
-                }
+                if (response.ok) loadVolunteers();
             } catch (error) {
                 alert('Terjadi kesalahan saat menghapus pendaftar');
             }
@@ -297,14 +524,10 @@
 
         async function loadVolunteers() {
             if (!checkAuth()) return;
-
             const container = document.getElementById('volunteerList');
             container.innerHTML = '<div class="loading">Memuat data pendaftar...</div>';
-
             try {
                 const response = await fetch('/api/volunteers');
-                if (!response.ok) throw new Error('Gagal memuat data');
-
                 const volunteers = await response.json();
 
                 if (!Array.isArray(volunteers) || volunteers.length === 0) {
@@ -312,51 +535,84 @@
                     return;
                 }
 
-                let html = `
-                    <table>
-                        <tr>
-                            <th>Nama</th>
-                            <th>NIM</th>
-                            <th>Prodi</th>
-                            <th>No. HP</th>
-                            <th>Divisi</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                `;
-
-                volunteers.forEach(volunteer => {
-                    html += `
-                        <tr>
-                            <td>${volunteer.name || '-'}</td>
-                            <td>${volunteer.nim || '-'}</td>
-                            <td>${volunteer.prodi || '-'}</td>
-                            <td>${volunteer.noHp || '-'}</td>
-                            <td>${volunteer.divisionId || '-'}</td>
-                            <td><span class="status ${volunteer.status === 'active' ? 'active' : 'inactive'}">${volunteer.status === 'active' ? 'Aktif' : 'Tidak Aktif'}</span></td>
-                            <td>
-                                <button class="action-btn btn-delete" onclick="deleteVolunteer('${volunteer.id}')">Hapus</button>
-                            </td>
-                        </tr>
-                    `;
+                let html = `<table><tr><th>Nama</th><th>NIM</th><th>Prodi</th><th>No. HP</th><th>Divisi</th><th>Status</th><th>Aksi</th></tr>`;
+                volunteers.forEach(v => {
+                    html += `<tr>
+                        <td>${v.name || '-'}</td>
+                        <td>${v.nim || '-'}</td>
+                        <td>${v.prodi || '-'}</td>
+                        <td>${v.noHp || '-'}</td>
+                        <td>${v.divisionId || '-'}</td>
+                        <td><span class="status ${v.status === 'active' ? 'active' : 'inactive'}">${v.status === 'active' ? 'Aktif' : 'Tidak Aktif'}</span></td>
+                        <td><button class="action-btn btn-delete" onclick="deleteVolunteer('${v.id}')">Hapus</button></td>
+                    </tr>`;
                 });
-
                 html += '</table>';
                 container.innerHTML = html;
-
-            } catch (error) {
-                console.error('Error loading volunteers:', error);
-                container.innerHTML = '<div class="empty">Gagal memuat data pendaftar.</div>';
+            } catch {
+                container.innerHTML = '<div class="empty">Gagal memuat data.</div>';
             }
         }
 
-        // Export volunteers data
         function exportVolunteersData() {
             window.open('/api/volunteers/export/csv', '_blank');
         }
 
-        // Load volunteers saat halaman dimuat
+        function loadEvent() {
+            fetch('/api/event')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.event) {
+                        const e = data.event;
+                        document.getElementById('event-detail').innerHTML = `
+                            <div class="event-card"><span class="icon"><i class="fas fa-calendar-alt"></i></span><div class="event-info-text"><strong>Nama Acara:</strong><br>${e.name}</div></div>
+                            <div class="event-card"><span class="icon"><i class="fas fa-clock"></i></span><div class="event-info-text"><strong>Tanggal:</strong> ${e.date}<br><strong>Waktu:</strong> ${e.time}</div></div>
+                            <div class="event-card"><span class="icon"><i class="fas fa-map-marker-alt"></i></span><div class="event-info-text"><strong>Tempat:</strong><br>${e.location}</div></div>
+                            <div class="event-card"><span class="icon"><i class="fas fa-info-circle"></i></span><div class="event-info-text"><strong>Deskripsi:</strong><br><span style="color:#3867d6">${e.description}</span></div></div>
+                        `;
+                    }
+                });
+        }
+
+        document.getElementById('event-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('event-name').value;
+            const date = document.getElementById('event-date').value;
+            const time = document.getElementById('event-time').value;
+            const location = document.getElementById('event-location').value;
+            const description = document.getElementById('event-description').value;
+
+            fetch('/api/event', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        date,
+                        time,
+                        location,
+                        description
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    const msg = document.getElementById('event-msg');
+                    msg.textContent = data.success ? 'Tersimpan!' : 'Gagal menyimpan';
+                    msg.style.color = data.success ? '#218c74' : '#c0392b';
+                    msg.style.opacity = '0';
+                    setTimeout(() => {
+                        msg.style.opacity = '1';
+                    }, 100);
+                    setTimeout(() => {
+                        msg.textContent = '';
+                    }, 2500);
+                    if (data.success) loadEvent();
+                });
+        });
+
         loadVolunteers();
+        loadEvent();
     </script>
 </body>
 

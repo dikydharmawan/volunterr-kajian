@@ -2,6 +2,7 @@ import express from 'express';
 import { setAdminRoutes } from './routes/adminRoutes';
 import { setVolunteerRoutes } from './routes/volunteerRoutes';
 import { setDivisionRoutes } from './routes/divisionRoutes';
+import { setEventRoutes } from './routes/eventRoutes';
 import path from 'path';
 import './config/firebase'; // Import konfigurasi Firebase
 
@@ -16,6 +17,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 setAdminRoutes(app);
 setVolunteerRoutes(app);
 setDivisionRoutes(app);
+setEventRoutes(app);
 
 // Arahkan route utama ke index.html (form pendaftaran volunteer)
 app.get('/', (req, res) => {

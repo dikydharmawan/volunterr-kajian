@@ -6,12 +6,15 @@
     <title>Pendaftaran Kepanitiaan Pengajian Akbar Poliwangi</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Quicksand', Arial, sans-serif;
-            background: linear-gradient(135deg, #e0f7fa 0%, #e8f5e9 100%);
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            min-height: 100vh;
         }
         
         .header-acara {
@@ -147,6 +150,119 @@
         .required {
             color: #c0392b;
         }
+        
+        .form-container {
+            max-width: 420px;
+            margin: 2.5rem auto 0 auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(60, 60, 120, 0.15);
+            padding: 2.5rem 2rem 2rem 2rem;
+            animation: fadeInDown 1s;
+        }
+        
+        .form-container h2 {
+            text-align: center;
+            color: #1a3a5d;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #1a3a5d;
+            font-weight: 500;
+        }
+        
+        .input-icon {
+            position: relative;
+        }
+        
+        .input-icon i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f53ac;
+            font-size: 1.1rem;
+        }
+        
+        .input-icon input,
+        .input-icon select {
+            width: 100%;
+            padding: 0.7rem 1rem 0.7rem 2.2rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.2s;
+            box-sizing: border-box;
+        }
+        
+        .input-icon input:focus,
+        .input-icon select:focus {
+            border: 1.5px solid #7f53ac;
+            outline: none;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(90deg, #7f53ac 0%, #647dee 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(90deg, #647dee 0%, #7f53ac 100%);
+        }
+        
+        .info-card {
+            background: #f7f7fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            color: #555;
+            font-size: 0.98rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+        }
+        
+        .info-card i {
+            color: #647dee;
+            font-size: 1.3rem;
+            margin-top: 0.1rem;
+        }
+        
+        .notif {
+            color: #fff;
+            background: #7f53ac;
+            border-radius: 6px;
+            padding: 0.7rem;
+            margin-top: 1.2rem;
+            font-size: 0.98rem;
+            text-align: center;
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+                max-width: 98vw;
+            }
+        }
     </style>
 </head>
 
@@ -156,38 +272,52 @@
         <h2>Pendaftaran Kepanitiaan</h2>
         <p>Bergabunglah menjadi bagian dari kepanitiaan Pengajian Akbar Poliwangi!<br>Kontribusi Anda sangat berarti untuk suksesnya acara ini.</p>
     </div>
-    <div class="container">
-        <h2>Formulir Pendaftaran</h2>
-
-        <div id="selectedDivisionInfo" class="selected-division" style="display: none;">
-            <h4>Divisi yang Dipilih</h4>
-            <p id="divisionName"></p>
-            <p id="divisionDescription"></p>
-        </div>
-
+    <div class="form-container animate__animated animate__fadeInDown">
+        <h2><i class="fa-solid fa-hands-helping"></i> Daftar Volunteer</h2>
         <form id="volunteerForm">
-            <label for="name">Nama <span class="required">*</span></label>
-            <input type="text" id="name" name="name" required>
-
-            <label for="nim">NIM <span class="required">*</span></label>
-            <input type="text" id="nim" name="nim" required>
-
-            <label for="prodi">Prodi <span class="required">*</span></label>
-            <input type="text" id="prodi" name="prodi" required>
-
-            <label for="noHp">No. HP <span class="required">*</span></label>
-            <input type="tel" id="noHp" name="noHp" required>
-
-            <label for="divisionId">Pilihan Divisi <span class="required">*</span></label>
-            <select id="divisionId" name="divisionId" required>
-                <option value="">-- Pilih Divisi --</option>
-            </select>
-
-            <button type="submit">Daftar</button>
+            <div class="input-group">
+                <label for="name">Nama</label>
+                <div class="input-icon">
+                    <i class="fa fa-user"></i>
+                    <input type="text" id="name" name="name" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="nim">NIM</label>
+                <div class="input-icon">
+                    <i class="fa fa-id-card"></i>
+                    <input type="text" id="nim" name="nim" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="prodi">Prodi</label>
+                <div class="input-icon">
+                    <i class="fa fa-graduation-cap"></i>
+                    <input type="text" id="prodi" name="prodi" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="noHp">No HP</label>
+                <div class="input-icon">
+                    <i class="fa fa-phone"></i>
+                    <input type="text" id="noHp" name="noHp" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="divisionId">Divisi</label>
+                <div class="input-icon">
+                    <i class="fa fa-users"></i>
+                    <select id="divisionId" name="divisionId" required>
+                        <option value="">Pilih Divisi</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn"><i class="fa-solid fa-paper-plane"></i> Daftar</button>
         </form>
-        <div class="message" id="message"></div>
-        <a href="index.html" class="back">&larr; Kembali ke Beranda</a>
+        <div class="notif animate__animated" id="notif"></div>
+        <div class="info-card"><i class="fa-solid fa-circle-info"></i> Pastikan data yang kamu isi sudah benar sebelum submit.</div>
     </div>
+    <a href="index.html" class="back">&larr; Kembali ke Beranda</a>
     <script>
         // Load divisi dari API
         async function loadDivisions() {
@@ -217,10 +347,10 @@
             const prodi = document.getElementById('prodi').value;
             const noHp = document.getElementById('noHp').value;
             const divisionId = document.getElementById('divisionId').value;
-            const messageDiv = document.getElementById('message');
+            const messageDiv = document.getElementById('notif');
             const submitButton = document.querySelector('button[type="submit"]');
             messageDiv.textContent = '';
-            messageDiv.className = 'message';
+            messageDiv.className = 'notif';
             submitButton.disabled = true;
             submitButton.textContent = 'Mendaftar...';
             try {
