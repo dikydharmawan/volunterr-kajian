@@ -7,14 +7,13 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import {setGlobalOptions} from "firebase-functions";
-import {onRequest} from "firebase-functions/https";
 import express from 'express';
 import { setAdminRoutes } from './routes/adminRoutes';
 import { setVolunteerRoutes } from './routes/volunteerRoutes';
 import { setDivisionRoutes } from './routes/divisionRoutes';
 import { setEventRoutes } from './routes/eventRoutes';
 import './config/firebase';
+import path from 'path';
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
@@ -29,26 +28,20 @@ import './config/firebase';
 // functions should each use functions.runWith({ maxInstances: 10 }) instead.
 // In the v1 API, each function can only serve one request per container, so
 // this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
 
 const app = express();
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../public')));
 
 setAdminRoutes(app);
 setVolunteerRoutes(app);
 setDivisionRoutes(app);
 setEventRoutes(app);
 
-// Untuk Firebase Functions
-export const api = onRequest(app);
-
-// Untuk Render: jalankan server jika file ini dijalankan langsung
-if (require.main === module) {
-  const PORT = process.env.PORT || 8080;
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // export const helloWorld = onRequest((request, response) => {
 //   logger.info("Hello logs!", {structuredData: true});
