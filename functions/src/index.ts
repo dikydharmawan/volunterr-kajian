@@ -9,8 +9,7 @@
 
 import {setGlobalOptions} from "firebase-functions";
 import {onRequest} from "firebase-functions/https";
-import * as logger from "firebase-functions/logger";
-import * as express from 'express';
+import express from 'express';
 import { setAdminRoutes } from './routes/adminRoutes';
 import { setVolunteerRoutes } from './routes/volunteerRoutes';
 import { setDivisionRoutes } from './routes/divisionRoutes';

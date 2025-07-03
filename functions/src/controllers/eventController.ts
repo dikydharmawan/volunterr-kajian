@@ -17,9 +17,9 @@ export const createOrUpdateEvent = async (req: Request, res: Response) => {
       return res.status(400).json({ success: false, message: 'All fields are required' });
     }
     await EventModel.createOrUpdateEvent({ name, date, time, location, description });
-    res.json({ success: true, message: 'Event saved' });
+    return res.json({ success: true, message: 'Event saved' });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Failed to save event', error });
+    return res.status(500).json({ success: false, message: 'Failed to save event', error });
   }
 };
 

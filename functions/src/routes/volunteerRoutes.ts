@@ -1,13 +1,8 @@
-import { Router } from 'express';
 import { VolunteerController } from '../controllers/volunteerController';
-import { Application, Request, Response, Router as ExpressRouter } from 'express';
+import { Application, Request, Response, Router } from 'express';
 
 const volunteerController = new VolunteerController();
 const router = Router();
-
-interface SetVolunteerRoutes {
-    (app: Application): void;
-}
 
 export function setVolunteerRoutes(app: Application): void {
     // Route untuk pendaftaran volunteer (POST)

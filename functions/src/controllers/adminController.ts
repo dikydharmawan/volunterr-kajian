@@ -1,4 +1,4 @@
-import { Request, Response, Application } from 'express';
+import { Request, Response } from 'express';
 import { db } from '../config/firebase';
 
 class AdminController {
@@ -126,13 +126,13 @@ export async function updateVolunteerStatus(req: Request, res: Response) {
         const updatedVolunteer = await adminController.updateVolunteerStatus(id, status);
         
         if (updatedVolunteer) {
-            res.json({ message: 'Status relawan berhasil diperbarui', volunteer: updatedVolunteer });
+            return res.json({ message: 'Status relawan berhasil diperbarui', volunteer: updatedVolunteer });
         } else {
-            res.status(404).json({ message: 'Relawan tidak ditemukan' });
+            return res.status(404).json({ message: 'Relawan tidak ditemukan' });
         }
     } catch (error) {
         console.error('Error updating volunteer status:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat memperbarui status relawan' });
+        return res.status(500).json({ message: 'Terjadi kesalahan saat memperbarui status relawan' });
     }
 }
 
@@ -143,18 +143,18 @@ export async function loginAdmin(req: Request, res: Response) {
             return res.status(400).json({ message: 'Username dan password wajib diisi' });
         }
         if (username === 'admin_volunteer' && password === 'adminimam2025') {
-            res.json({
+            return res.json({
                 success: true,
                 message: 'Login berhasil',
                 admin: { username: 'admin_volunteer' },
                 token: 'admin-token-' + Date.now()
             });
         } else {
-            res.status(401).json({ message: 'Username atau password salah' });
+            return res.status(401).json({ message: 'Username atau password salah' });
         }
     } catch (error) {
         console.error('Error logging in admin:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat login' });
+        return res.status(500).json({ message: 'Terjadi kesalahan saat login' });
     }
 }
 

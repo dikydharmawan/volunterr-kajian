@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { db } from '../config/firebase';
-import { Division, DivisionModel } from '../models/division';
 
 export class DivisionController {
     private collectionName = 'divisions';
