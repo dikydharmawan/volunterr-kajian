@@ -104,21 +104,26 @@ export default AdminController;
 
 export async function createAdmin(req: Request, res: Response) {
     try {
-        const { name, email, password } = req.body;
-        
-        if (!name || !email || !password) {
-            return res.status(400).json({ message: 'Nama, email, dan password wajib diisi' });
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res.status(400).json({ message: 'Username dan password wajib diisi' });
         }
-
-        const adminController = new AdminController();
-        const newAdmin = await adminController.createAdmin(name, email, password);
-        
-        res.status(201).json({ message: 'Admin berhasil dibuat', admin: newAdmin });
+        if (username === 'admin_volunteer' && password === 'adminimam2025') {
+            res.json({
+                success: true,
+                message: 'Login berhasil',
+                admin: { username: 'admin_volunteer' },
+                token: 'admin-token-' + Date.now()
+            });
+        } else {
+            res.status(401).json({ message: 'Username atau password salah' });
+        }
     } catch (error) {
-        console.error('Error creating admin:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat membuat admin' });
+        console.error('Error logging in admin:', error);
+        res.status(500).json({ message: 'Terjadi kesalahan saat login' });
     }
 }
+
 
 export async function updateAdmin(req: Request, res: Response) {
     try {
