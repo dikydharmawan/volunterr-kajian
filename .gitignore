@@ -1,4 +1,22 @@
+# Node modules
 node_modules/
-firebase-key.json
-.env
+
+# Build output
 dist/
+build/
+
+# Environment files
+.env
+.env.*
+
+# Firebase service account key (JANGAN diupload ke repo!)
+firebase-key.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
