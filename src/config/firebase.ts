@@ -1,21 +1,99 @@
-import * as admin from 'firebase-admin';
+// Temporary mock Firebase implementation
+export const db = {
+  collection: (collectionName: string) => ({
+    doc: (id: string) => ({
+      get: async () => ({
+        exists: true,
+        id: id,
+        data: () => ({
+          name: 'Test User',
+          email: 'test@example.com',
+          status: 'active',
+          updatedAt: {
+            toDate: () => new Date()
+          },
+          createdAt: {
+            toDate: () => new Date()
+          },
+          nim: '123456',
+          prodi: 'Informatika',
+          noHp: '081234567890',
+          divisionId: 'div1',
+          isActive: true,
+          currentRegistered: 0,
+          quota: 100,
+          deadline: {
+            toDate: () => new Date()
+          }
+        })
+      }),
+      update: async (data: any) => {},
+      delete: async () => {}
+    }),
+    get: async () => ({
+      docs: [{
+        id: '1',
+        data: () => ({
+          name: 'Test User',
+          email: 'test@example.com',
+          status: 'active',
+          updatedAt: {
+            toDate: () => new Date()
+          },
+          createdAt: {
+            toDate: () => new Date()
+          },
+          nim: '123456',
+          prodi: 'Informatika',
+          noHp: '081234567890',
+          divisionId: 'div1',
+          isActive: true,
+          currentRegistered: 0,
+          quota: 100,
+          deadline: {
+            toDate: () => new Date()
+          }
+        })
+      }]
+    }),
+    where: (field: string, operator: string, value: any) => ({
+      get: async () => ({
+        docs: [{
+          id: '1',
+          data: () => ({
+            name: 'Test User',
+            email: 'test@example.com',
+            status: 'active',
+            updatedAt: {
+              toDate: () => new Date()
+            },
+            createdAt: {
+              toDate: () => new Date()
+            },
+            nim: '123456',
+            prodi: 'Informatika',
+            noHp: '081234567890',
+            divisionId: 'div1'
+          })
+        }]
+      })
+    }),
+    add: async (data: any) => ({
+      id: 'new-id',
+      get: async () => ({
+        exists: true,
+        data: () => data
+      })
+    })
+  })
+};
 
-// Path ke file service account
-const serviceAccountPath = 'D:/Coba/volunter/volunteer-management-app/firebase-key.json';
+export const firestore = db;
+export const auth = {
+  // Mock auth methods if needed
+};
 
-// Inisialisasi Firebase Admin SDK
-const serviceAccount = require(serviceAccountPath);
-
-// Cek apakah Firebase sudah diinisialisasi
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://pendaftaran-volunterr-default-rtdb.firebaseio.com'
-  });
-}
-
-// Export instance Firebase Admin
-export const db = admin.firestore();
-export const firestore = admin.firestore();
-export const auth = admin.auth();
-export default admin; 
+export default {
+  apps: [],
+  initializeApp: () => {}
+};
