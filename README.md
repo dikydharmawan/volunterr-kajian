@@ -1,81 +1,68 @@
-# Aplikasi Manajemen Relawan
+# Volunteer Management App
 
-Proyek ini adalah Aplikasi Manajemen Relawan yang memungkinkan administrator untuk mengelola relawan secara efektif. Aplikasi ini dibangun menggunakan TypeScript dan Express.js, memberikan cara terstruktur untuk menangani fungsi admin dan relawan.
+Aplikasi manajemen volunteer untuk Pengajian Akbar Poliwangi 2024.
 
-## Fitur
+## Fitur Utama
+- Pendaftaran volunteer secara online
+- Manajemen divisi volunteer (admin)
+- Dashboard admin
+- Pengaturan acara
+- Export data volunteer/divisi
+- Responsive design (mobile friendly)
 
-- Manajemen admin: Membuat, membaca, memperbarui, dan menghapus pengguna admin.
-- Manajemen relawan: Membuat, membaca, memperbarui, dan menghapus pengguna relawan.
-- Endpoint API RESTful untuk operasi admin dan relawan.
+## Login Admin
+- **Username:** `admin_volunteer`
+- **Password:** `adminimam2025`
 
-## Struktur Proyek
-
+## Struktur Project
 ```
-volunteer-management-app
-├── src
-│   ├── app.ts                  # Titik masuk aplikasi
-│   ├── controllers             # Berisi controller untuk menangani request
-│   │   ├── adminController.ts   # Controller admin untuk mengelola pengguna admin
-│   │   └── volunteerController.ts # Controller relawan untuk mengelola pengguna relawan
-│   ├── models                  # Berisi model data
-│   │   ├── admin.ts            # Model admin yang mendefinisikan struktur objek admin
-│   │   └── volunteer.ts        # Model relawan yang mendefinisikan struktur objek relawan
-│   ├── routes                  # Berisi definisi rute
-│   │   ├── adminRoutes.ts      # Rute untuk operasi terkait admin
-│   │   └── volunteerRoutes.ts   # Rute untuk operasi terkait relawan
-│   └── types                   # Berisi tipe TypeScript
-│       └── index.ts            # Definisi tipe untuk Admin dan Relawan
-├── package.json                # File konfigurasi NPM
-├── tsconfig.json               # File konfigurasi TypeScript
-└── README.md                   # Dokumentasi proyek
+volunteer-management-app/
+├── public/           # Semua file frontend (HTML, CSS, JS)
+├── src/              # Source code backend (Node.js/Express)
+├── package.json      # Dependency
+├── firebase-key.json # (JANGAN diupload ke repo!)
+├── .gitignore        # File/folder yang diabaikan git
+└── ...
 ```
 
-## Instalasi
-
-1. Clone repository:
-   ```
-   git clone https://github.com/yourusername/volunteer-management-app.git
-   ```
-
-2. Masuk ke direktori proyek:
-   ```
-   cd volunteer-management-app
-   ```
-
-3. Install dependensi:
-   ```
+## Cara Menjalankan Lokal
+1. **Install dependency:**
+   ```sh
    npm install
    ```
-
-## Penggunaan
-
-1. Jalankan aplikasi:
-   ```
+2. **Jalankan server:**
+   ```sh
    npm start
    ```
+3. Buka `http://localhost:3000` di browser.
 
-2. Aplikasi akan berjalan di `http://localhost:3000`.
+## Deploy ke Firebase Hosting
+1. **Install Firebase CLI:**
+   ```sh
+   npm install -g firebase-tools
+   ```
+2. **Login Firebase:**
+   ```sh
+   firebase login
+   ```
+3. **Inisialisasi hosting (sekali saja):**
+   ```sh
+   firebase init hosting
+   # Pilih folder: public
+   # Jangan overwrite index.html
+   ```
+4. **Deploy:**
+   ```sh
+   firebase deploy
+   ```
 
-## Endpoint API
+## CI/CD Otomatis (Opsional)
+- Sudah terhubung ke GitHub Actions: setiap push ke branch utama akan auto-deploy ke Firebase Hosting.
 
-### Rute Admin
+## Peringatan Penting
+- **JANGAN upload file rahasia seperti `firebase-key.json` ke repo publik!**
+- Tambahkan ke `.gitignore` agar tidak ikut ter-commit.
 
-- `POST /admin` - Membuat admin baru
-- `GET /admin/:id` - Mendapatkan admin berdasarkan ID
-- `PUT /admin/:id` - Memperbarui admin berdasarkan ID
-- `DELETE /admin/:id` - Menghapus admin berdasarkan ID
+---
 
-### Rute Relawan
-
-- `POST /volunteer` - Membuat relawan baru
-- `GET /volunteer/:id` - Mendapatkan relawan berdasarkan ID
-- `PUT /volunteer/:id` - Memperbarui relawan berdasarkan ID
-- `DELETE /volunteer/:id` - Menghapus relawan berdasarkan ID
-
-## Kontribusi
-
-Kontribusi sangat diterima! Silakan buat issue atau submit pull request untuk perbaikan atau fitur baru.
-
-## Lisensi
-
-Proyek ini dilisensikan di bawah Lisensi MIT.
+> Dibuat untuk Pengajian Akbar Poliwangi 2024

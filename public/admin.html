@@ -195,10 +195,10 @@
             <h2>Login Admin</h2>
             <form>
                 <div class="input-group">
-                    <label for="email">Email</label>
+                    <label for="username">Username</label>
                     <div class="input-icon">
-                        <i class="fa fa-envelope"></i>
-                        <input type="email" id="email" placeholder="admin@volunteer.com" required>
+                        <i class="fa fa-user"></i>
+                        <input type="text" id="username" placeholder="Username" required>
                     </div>
                 </div>
                 <div class="input-group">
@@ -209,7 +209,7 @@
                     </div>
                 </div>
                 <button a href="dashboard.html" class="login-btn" type="submit">Login</button>
-                <div class="error-message" style="display:none;">Email atau password salah</div>
+                <div class="error-message" style="display:none;">Username atau password salah</div>
             </form>
             <a href="index.html" class="back-link">&larr; Kembali ke Beranda</a>
         </div>
@@ -240,7 +240,7 @@
     <script>
         document.querySelector('form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorDiv = document.querySelector('.error-message');
             errorDiv.style.display = 'none';
@@ -252,7 +252,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        email,
+                        username,
                         password
                     })
                 });
@@ -266,7 +266,7 @@
                         window.location.href = 'dashboard.html';
                     }, 1000);
                 } else {
-                    errorDiv.textContent = data.message || 'Email atau password salah';
+                    errorDiv.textContent = data.message || 'Username atau password salah';
                     errorDiv.style.background = '#ffeaea';
                     errorDiv.style.color = '#e74c3c';
                     errorDiv.style.display = 'block';

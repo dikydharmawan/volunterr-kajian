@@ -175,26 +175,19 @@ export async function updateVolunteerStatus(req: Request, res: Response) {
 
 export async function loginAdmin(req: Request, res: Response) {
     try {
-        const { email, password } = req.body;
-        
-        if (!email || !password) {
-            return res.status(400).json({ message: 'Email dan password wajib diisi' });
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res.status(400).json({ message: 'Username dan password wajib diisi' });
         }
-
-        const admin = await verifyAdminLogin(email, password);
-        
-        if (admin) {
-            // Hapus password dari response
-            const adminData = admin as any;
-            const { password: _, ...adminWithoutPassword } = adminData;
+        if (username === 'admin_volunteer' && password === 'adminimam2025') {
             res.json({
                 success: true,
                 message: 'Login berhasil',
-                admin: adminWithoutPassword,
-                token: 'admin-token-' + Date.now() // Simple token untuk demo
+                admin: { username: 'admin_volunteer' },
+                token: 'admin-token-' + Date.now()
             });
         } else {
-            res.status(401).json({ message: 'Email atau password salah' });
+            res.status(401).json({ message: 'Username atau password salah' });
         }
     } catch (error) {
         console.error('Error logging in admin:', error);
