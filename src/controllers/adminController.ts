@@ -1,6 +1,5 @@
 import { Request, Response, Application } from 'express';
 import { db } from '../config/firebase';
-import { verifyAdminLogin, createDefaultAdmin } from '../config/adminAuth';
 
 class AdminController {
     private collectionName = 'admins';
@@ -160,11 +159,5 @@ export async function loginAdmin(req: Request, res: Response) {
 }
 
 export async function initializeAdmin(req: Request, res: Response) {
-    try {
-        await createDefaultAdmin();
-        res.json({ message: 'Admin default berhasil dibuat atau sudah ada' });
-    } catch (error) {
-        console.error('Error initializing admin:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat membuat admin default' });
-    }
+    res.json({ message: 'Fitur tidak tersedia. Admin sudah hardcode.' });
 }
