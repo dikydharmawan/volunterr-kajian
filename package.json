@@ -18,6 +18,9 @@
         "@types/express": "^4.17.13",
         "@types/node": "^16.11.7"
     },
-    "author": "Your Name",
-    "license": "MIT"
+    "author": "Diky Dharmawan",
+    "license": "MIT",
+    "engines": {
+        "node": "18.x"
+    }
 }
