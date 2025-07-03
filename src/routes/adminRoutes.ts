@@ -12,7 +12,7 @@ export function setAdminRoutes(app: Application) {
 
 
     // Routes untuk admin
-    router.post('/admin', (req, res) => adminController.createAdmin(req, res));
+  
     router.put('/admin/:id', (req, res) => adminController.updateAdmin(req, res));
 
     // Routes untuk mengelola volunteers (admin only)

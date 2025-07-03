@@ -5,24 +5,6 @@ import { verifyAdminLogin, createDefaultAdmin } from '../config/adminAuth';
 class AdminController {
     private collectionName = 'admins';
 
-    async createAdmin(name: string, email: string, password: string) {
-        try {
-            const newAdmin = {
-                name,
-                email,
-                password, // Dalam produksi, password harus di-hash
-                createdAt: new Date(),
-                role: 'admin'
-            };
-
-            const docRef = await db.collection(this.collectionName).add(newAdmin);
-            return { id: docRef.id, ...newAdmin };
-        } catch (error) {
-            console.error('Error creating admin:', error);
-            throw error;
-        }
-    }
-
     async getAdmin(id: string) {
         try {
             const doc = await db.collection(this.collectionName).doc(id).get();
@@ -101,29 +83,6 @@ class AdminController {
 }
 
 export default AdminController;
-
-export async function createAdmin(req: Request, res: Response) {
-    try {
-        const { username, password } = req.body;
-        if (!username || !password) {
-            return res.status(400).json({ message: 'Username dan password wajib diisi' });
-        }
-        if (username === 'admin_volunteer' && password === 'adminimam2025') {
-            res.json({
-                success: true,
-                message: 'Login berhasil',
-                admin: { username: 'admin_volunteer' },
-                token: 'admin-token-' + Date.now()
-            });
-        } else {
-            res.status(401).json({ message: 'Username atau password salah' });
-        }
-    } catch (error) {
-        console.error('Error logging in admin:', error);
-        res.status(500).json({ message: 'Terjadi kesalahan saat login' });
-    }
-}
-
 
 export async function updateAdmin(req: Request, res: Response) {
     try {
