@@ -329,11 +329,12 @@
                 const res = await fetch('/api/divisions');
                 const divisions = await res.json();
                 divisions
-                    .filter(div => div.isActive && (div.quota === undefined || div.currentRegistered === undefined || div.currentRegistered < div.quota))
+                    .filter(div => div.isActive && typeof div.quota === 'number' && typeof div.currentRegistered === 'number' && (div.quota - div.currentRegistered) > 0)
                     .forEach(div => {
+                        const sisa = div.quota - div.currentRegistered;
                         const opt = document.createElement('option');
                         opt.value = div.id;
-                        opt.textContent = div.name + (div.quota ? ' (Kuota: ' + (div.quota - (div.currentRegistered || 0)) + ')' : '');
+                        opt.textContent = `${div.name} (Sisa: ${sisa})`;
                         select.appendChild(opt);
                     });
             } catch (err) {
@@ -380,6 +381,7 @@
                             const data = await response.json();
                             messageDiv.textContent = data.message || 'Pendaftaran gagal. Silakan coba lagi.';
                             messageDiv.classList.add('error');
+                            messageDiv.style.display = 'block';
                         }
                     } catch (err) {
                         messageDiv.textContent = 'Terjadi kesalahan jaringan.';

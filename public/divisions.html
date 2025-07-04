@@ -394,6 +394,16 @@
     </div>
 
     <script>
+        // Cek autentikasi admin
+        function checkAuth() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                window.location.href = 'admin.html';
+                return false;
+            }
+            return true;
+        }
+
         // Logout
         function logout() {
             localStorage.removeItem('adminToken');
@@ -415,11 +425,6 @@
                 const divisions = await response.json();
                 console.log('Data divisi dari backend:', divisions); // log debug
 
-                if (!Array.isArray(divisions) || divisions.length === 0) {
-                    container.innerHTML = '<div class="empty">Belum ada divisi yang dibuat atau data tidak ditemukan.</div>';
-                    return;
-                }
-
                 let html = `
                     <table>
                         <tr>
@@ -427,49 +432,66 @@
                             <th>Deskripsi</th>
                             <th>Kuota</th>
                             <th>Terdaftar</th>
+                            <th>Sisa Kuota</th>
                             <th>Batas Waktu</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                 `;
 
-                divisions.forEach(division => {
-                    const deadline = new Date(division.deadline);
-                    const isExpired = new Date() > deadline;
-                    const isFull = division.currentRegistered >= division.quota;
-                    const isActive = division.isActive;
+                if (!Array.isArray(divisions) || divisions.length === 0) {
+                    html += `<tr><td colspan="8" style="text-align:center;color:#888;">Belum ada divisi yang dibuat atau data tidak ditemukan.</td></tr>`;
+                } else {
+                    divisions.forEach(division => {
+                        // Fallback jika field null/undefined
+                        const name = division.name || '-';
+                        const description = division.description || '-';
+                        const quota = division.quota !== undefined ? division.quota : '-';
+                        const currentRegistered = division.currentRegistered !== undefined ? division.currentRegistered : '-';
+                        const remainingQuota = (typeof division.quota === 'number' && typeof division.currentRegistered === 'number') ? (division.quota - division.currentRegistered) : '-';
+                        let deadline = '-';
+                        try {
+                            deadline = division.deadline ? new Date(division.deadline).toLocaleString('id-ID') : '-';
+                        } catch (e) {
+                            console.error('Error parsing deadline:', division.deadline, e);
+                        }
+                        const isActive = division.isActive;
+                        const isExpired = division.deadline ? (new Date() > new Date(division.deadline)) : false;
+                        const isFull = division.currentRegistered !== undefined && division.quota !== undefined ? division.currentRegistered >= division.quota : false;
 
-                    let statusClass = 'status-active';
-                    let statusText = 'Aktif';
+                        let statusClass = 'status-active';
+                        let statusText = 'Aktif';
 
-                    if (!isActive) {
-                        statusClass = 'status-inactive';
-                        statusText = 'Tidak Aktif';
-                    } else if (isExpired) {
-                        statusClass = 'status-expired';
-                        statusText = 'Berakhir';
-                    } else if (isFull) {
-                        statusClass = 'status-full';
-                        statusText = 'Penuh';
-                    }
+                        if (!isActive) {
+                            statusClass = 'status-inactive';
+                            statusText = 'Tidak Aktif';
+                        } else if (isExpired) {
+                            statusClass = 'status-expired';
+                            statusText = 'Berakhir';
+                        } else if (isFull) {
+                            statusClass = 'status-full';
+                            statusText = 'Penuh';
+                        }
 
-                    html += `
-                        <tr>
-                            <td>${division.name}</td>
-                            <td>${division.description}</td>
-                            <td>${division.quota}</td>
-                            <td>${division.currentRegistered}</td>
-                            <td>${deadline.toLocaleString('id-ID')}</td>
-                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                            <td>
-                                <div class="table-action-btns">
-                                    <button class="btn btn-primary" onclick="editDivision('${division.id}')">Edit</button>
-                                    <button class="btn btn-danger" onclick="deleteDivision('${division.id}')">Hapus</button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                });
+                        html += `
+                            <tr>
+                                <td>${name}</td>
+                                <td>${description}</td>
+                                <td>${quota}</td>
+                                <td>${currentRegistered}</td>
+                                <td>${remainingQuota}</td>
+                                <td>${deadline}</td>
+                                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                                <td>
+                                    <div class="table-action-btns">
+                                        <button class="btn btn-primary" onclick="editDivision('${division.id}')">Edit</button>
+                                        <button class="btn btn-danger" onclick="deleteDivision('${division.id}')">Hapus</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
 
                 html += '</table>';
                 container.innerHTML = html;

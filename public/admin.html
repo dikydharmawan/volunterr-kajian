@@ -265,6 +265,8 @@
                 }
 
                 if (res.ok && data.success) {
+                    if (data.token) localStorage.setItem('adminToken', data.token);
+                    if (data.admin) localStorage.setItem('adminData', JSON.stringify(data.admin));
                     errorDiv.textContent = 'Login berhasil';
                     errorDiv.style.background = '#eafaf1';
                     errorDiv.style.color = '#27ae60';

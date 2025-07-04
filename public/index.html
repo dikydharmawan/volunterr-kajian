@@ -480,14 +480,16 @@
                 if (!Array.isArray(divisions) || divisions.length === 0) return;
                 let html = `<div class='section-title'><i class='fa-solid fa-users'></i> Daftar Divisi Volunteer</div>`;
                 html += `<div style='overflow-x:auto'><table style='width:100%;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(60,60,120,0.07);margin-bottom:2rem;'>`;
-                html += `<tr><th>Nama Divisi</th><th>Deskripsi</th><th>Kuota</th><th>Status</th></tr>`;
+                html += `<tr><th>Nama Divisi</th><th>Deskripsi</th><th>Kuota</th><th>Sisa Kuota</th><th>Status</th></tr>`;
                 divisions.filter(d => d.isActive).forEach(division => {
                     let status = 'Aktif';
                     if (division.currentRegistered >= division.quota) status = 'Penuh';
+                    const remainingQuota = (typeof division.quota === 'number' && typeof division.currentRegistered === 'number') ? (division.quota - division.currentRegistered) : '-';
                     html += `<tr>`;
                     html += `<td>${division.name}</td>`;
                     html += `<td>${division.description}</td>`;
                     html += `<td>${division.quota}</td>`;
+                    html += `<td>${remainingQuota}</td>`;
                     html += `<td>${status}</td>`;
                     html += `</tr>`;
                 });

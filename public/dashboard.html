@@ -433,11 +433,6 @@
                 <div class="dashboard-card-title">Total Divisi</div>
                 <div class="dashboard-card-value">...</div>
             </div>
-            <div class="dashboard-card">
-                <i class="fa-solid fa-calendar-check dashboard-card-icon"></i>
-                <div class="dashboard-card-title">Acara Aktif</div>
-                <div class="dashboard-card-value">...</div>
-            </div>
         </div>
     </div>
 
@@ -494,6 +489,16 @@
     </div>
 
     <script>
+        // Cek autentikasi admin
+        function checkAuth() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                window.location.href = 'admin.html';
+                return false;
+            }
+            return true;
+        }
+
         function logout() {
             localStorage.removeItem('adminToken');
             localStorage.removeItem('adminData');
@@ -517,28 +522,63 @@
             const container = document.getElementById('volunteerList');
             container.innerHTML = '<div class="loading">Memuat data pendaftar...</div>';
             try {
-                const response = await fetch('/api/volunteers');
+                // Ambil data volunteer dan data divisi
+                const [response, divRes] = await Promise.all([
+                    fetch('/api/volunteers'),
+                    fetch('/api/divisions')
+                ]);
                 const volunteers = await response.json();
-
-                if (!Array.isArray(volunteers) || volunteers.length === 0) {
-                    container.innerHTML = '<div class="empty">Belum ada pendaftar.</div>';
-                    return;
+                const divisions = await divRes.json();
+                // Buat mapping id divisi ke nama
+                const divisionMap = {};
+                if (Array.isArray(divisions)) {
+                    divisions.forEach(d => {
+                        divisionMap[d.id] = d.name;
+                    });
                 }
 
-                let html = `<table><tr><th>Nama</th><th>NIM</th><th>Prodi</th><th>No. HP</th><th>Divisi</th><th>Status</th><th>Aksi</th></tr>`;
-                volunteers.forEach(v => {
-                    html += `<tr>
-                        <td>${v.name || '-'}</td>
-                        <td>${v.nim || '-'}</td>
-                        <td>${v.prodi || '-'}</td>
-                        <td>${v.noHp || '-'}</td>
-                        <td>${v.divisionId || '-'}</td>
-                        <td><span class="status ${v.status === 'active' ? 'active' : 'inactive'}">${v.status === 'active' ? 'Aktif' : 'Tidak Aktif'}</span></td>
-                        <td><button class="action-btn btn-delete" onclick="deleteVolunteer('${v.id}')">Hapus</button></td>
-                    </tr>`;
+                // Tambahkan dropdown filter divisi
+                let filterHtml = '<div style="margin-bottom:1rem;">';
+                filterHtml += '<label for="filterDivision">Filter Divisi: </label>';
+                filterHtml += '<select id="filterDivision"><option value="">Semua Divisi</option>';
+                divisions.forEach(d => {
+                    filterHtml += `<option value="${d.id}">${d.name}</option>`;
                 });
-                html += '</table>';
-                container.innerHTML = html;
+                filterHtml += '</select></div>';
+
+                // Fungsi render tabel volunteer sesuai filter
+                function renderTable(selectedDivisionId) {
+                    let filtered = Array.isArray(volunteers) ? volunteers : [];
+                    if (selectedDivisionId) {
+                        filtered = filtered.filter(v => v.divisionId === selectedDivisionId);
+                    }
+                    let html = `<table><tr><th>Nama</th><th>NIM</th><th>Prodi</th><th>No. HP</th><th>Divisi</th><th>Status</th><th>Aksi</th></tr>`;
+                    if (filtered.length === 0) {
+                        html += '<tr><td colspan="7" style="text-align:center;color:#888;">Belum ada pendaftar.</td></tr>';
+                    } else {
+                        filtered.forEach(v => {
+                            const divisiNama = divisionMap[v.divisionId] || v.divisionId || '-';
+                            html += `<tr>
+                                <td>${v.name || '-'}</td>
+                                <td>${v.nim || '-'}</td>
+                                <td>${v.prodi || '-'}</td>
+                                <td>${v.noHp || '-'}</td>
+                                <td>${divisiNama}</td>
+                                <td><span class="status ${v.status === 'active' ? 'active' : 'inactive'}">${v.status === 'active' ? 'Aktif' : 'Tidak Aktif'}</span></td>
+                                <td><button class="action-btn btn-delete" onclick="deleteVolunteer('${v.id}')">Hapus</button></td>
+                            </tr>`;
+                        });
+                    }
+                    html += '</table>';
+                    container.innerHTML = filterHtml + html;
+                    // Event listener filter
+                    document.getElementById('filterDivision').value = selectedDivisionId || '';
+                    document.getElementById('filterDivision').onchange = function() {
+                        renderTable(this.value);
+                    };
+                }
+                // Render pertama (tanpa filter)
+                renderTable('');
             } catch {
                 container.innerHTML = '<div class="empty">Gagal memuat data.</div>';
             }
@@ -600,6 +640,28 @@
                     if (data.success) loadEvent();
                 });
         });
+
+        // Fungsi untuk update statistik dashboard
+        async function updateDashboardStats() {
+            // Total Volunteer
+            try {
+                const resVol = await fetch('/api/volunteers');
+                const dataVol = await resVol.json();
+                document.querySelectorAll('.dashboard-card-value')[0].textContent = Array.isArray(dataVol) ? dataVol.length : '0';
+            } catch {
+                document.querySelectorAll('.dashboard-card-value')[0].textContent = '0';
+            }
+            // Total Divisi
+            try {
+                const resDiv = await fetch('/api/divisions');
+                const dataDiv = await resDiv.json();
+                document.querySelectorAll('.dashboard-card-value')[1].textContent = Array.isArray(dataDiv) ? dataDiv.length : '0';
+            } catch {
+                document.querySelectorAll('.dashboard-card-value')[1].textContent = '0';
+            }
+        }
+        // Jalankan saat halaman dimuat
+        updateDashboardStats();
 
         loadVolunteers();
         loadEvent();

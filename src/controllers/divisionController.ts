@@ -58,20 +58,38 @@ export async function getDivision(req: Request, res: Response) {
 export async function updateDivision(req: Request, res: Response) {
     try {
         const { id } = req.params;
-        const { name, description } = req.body;
+        const { name, description, quota, deadline, requirements, isActive } = req.body;
         const docRef = db.collection('divisions').doc(id);
         const doc = await docRef.get();
         if (!doc.exists) {
             return res.status(404).json({ message: 'Divisi tidak ditemukan' });
         }
-        await docRef.update({ name, description });
+        const updateData: any = { updatedAt: new Date() };
+        if (name !== undefined) updateData.name = name;
+        if (description !== undefined) updateData.description = description;
+        if (quota !== undefined) {
+            if (isNaN(Number(quota)) || Number(quota) < 0) {
+                return res.status(400).json({ message: 'Kuota harus angka >= 0' });
+            }
+            updateData.quota = Number(quota);
+        }
+        if (deadline !== undefined) {
+            const deadlineDate = new Date(deadline);
+            if (isNaN(deadlineDate.getTime())) {
+                return res.status(400).json({ message: 'Deadline tidak valid' });
+            }
+            updateData.deadline = deadlineDate;
+        }
+        if (requirements !== undefined) updateData.requirements = requirements;
+        if (isActive !== undefined) updateData.isActive = isActive;
+        await docRef.update(updateData);
         // Update file JSON lokal
         const filePath = path.join(__dirname, '../../divisions.json');
         let divisions = [];
         if (fs.existsSync(filePath)) {
             divisions = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         }
-        divisions = divisions.map((d: any) => d.id === id ? { ...d, name, description } : d);
+        divisions = divisions.map((d: any) => d.id === id ? { ...d, ...updateData } : d);
         fs.writeFileSync(filePath, JSON.stringify(divisions, null, 2));
         return res.json({ success: true, message: 'Divisi berhasil diupdate' });
     } catch (error) {

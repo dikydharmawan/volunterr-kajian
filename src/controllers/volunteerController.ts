@@ -178,23 +178,65 @@ export class VolunteerController {
 
 export async function addVolunteer(req: Request, res: Response) {
     try {
-        const { name, email, divisionId } = req.body;
-        if (!name || !email || !divisionId) {
+        const { name, nim, prodi, noHp, divisionId } = req.body;
+        if (!name || !nim || !prodi || !noHp || !divisionId) {
             return res.status(400).json({ message: 'Semua field wajib diisi' });
         }
-        const docRef = await db.collection('volunteers').add({ name, email, divisionId });
-        // Simpan ke file JSON lokal
+        const divisionRef = db.collection('divisions').doc(divisionId);
+        let newVolunteerId = null;
+        try {
+            await db.runTransaction(async (transaction) => {
+                const divisionDoc = await transaction.get(divisionRef);
+                if (!divisionDoc.exists) {
+                    throw new Error('Divisi tidak ditemukan');
+                }
+                const divisionData = divisionDoc.data();
+                if (!divisionData) {
+                    throw new Error('Data divisi tidak valid');
+                }
+                if (!divisionData.isActive) {
+                    throw new Error('Divisi tidak aktif');
+                }
+                // Inisialisasi currentRegistered jika belum ada
+                let currentRegistered = 0;
+                if (typeof divisionData.currentRegistered === 'number') {
+                    currentRegistered = divisionData.currentRegistered;
+                } else {
+                    transaction.update(divisionRef, { currentRegistered: 0 });
+                    currentRegistered = 0;
+                }
+                if (typeof divisionData.quota === 'number') {
+                    if (currentRegistered >= divisionData.quota) {
+                        throw new Error('Kuota divisi sudah penuh');
+                    }
+                }
+                // Update currentRegistered divisi terlebih dahulu
+                transaction.update(divisionRef, {
+                    currentRegistered: currentRegistered + 1
+                });
+                // Tambahkan volunteer HANYA jika kuota masih tersedia
+                const volunteerRef = db.collection('volunteers').doc();
+                transaction.set(volunteerRef, { name, nim, prodi, noHp, divisionId });
+                newVolunteerId = volunteerRef.id;
+            });
+        } catch (err) {
+            console.error('Transaction error:', err);
+            const msg = err instanceof Error ? err.message : 'Gagal menambah volunteer';
+            return res.status(400).json({ message: msg });
+        }
+        // Simpan ke file JSON lokal (hanya untuk data volunteer, bukan update currentRegistered divisi)
         const filePath = path.join(__dirname, '../../volunteers.json');
         let volunteers = [];
         if (fs.existsSync(filePath)) {
             volunteers = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         }
-        volunteers.push({ id: docRef.id, name, email, divisionId });
+        volunteers.push({ id: newVolunteerId, name, nim, prodi, noHp, divisionId });
         fs.writeFileSync(filePath, JSON.stringify(volunteers, null, 2));
-        return res.json({ success: true, message: 'Volunteer berhasil ditambahkan', id: docRef.id });
+        return res.json({ success: true, message: 'Volunteer berhasil ditambahkan', id: newVolunteerId });
     } catch (error) {
+        const msg = error instanceof Error ? error.message : 'Gagal menambah volunteer';
         console.error('Error adding volunteer:', error);
-        return res.status(500).json({ message: 'Gagal menambah volunteer' });
+        return res.status(400).json({ message: msg });
     }
 }
 
