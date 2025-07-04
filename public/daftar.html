@@ -268,10 +268,11 @@
 
 <body>
     <div class="header-acara">
-        <h1>Pengajian Akbar Poliwangi 2024</h1>
+        <h1>Pengajian Akbar Poliwangi 2025</h1>
         <h2>Pendaftaran Kepanitiaan</h2>
         <p>Bergabunglah menjadi bagian dari kepanitiaan Pengajian Akbar Poliwangi!<br>Kontribusi Anda sangat berarti untuk suksesnya acara ini.</p>
     </div>
+    <div id="event-info"></div>
     <div class="form-container animate__animated animate__fadeInDown">
         <h2><i class="fa-solid fa-hands-helping"></i> Daftar Volunteer</h2>
         <form id="volunteerForm">
@@ -319,71 +320,103 @@
     </div>
     <a href="index.html" class="back">&larr; Kembali ke Beranda</a>
     <script>
+        console.log('Script volunteerForm loaded');
         // Load divisi dari API
         async function loadDivisions() {
             const select = document.getElementById('divisionId');
             select.innerHTML = '<option value="">-- Pilih Divisi --</option>';
             try {
-                const res = await fetch('/api/divisions/active');
+                const res = await fetch('/api/divisions');
                 const divisions = await res.json();
-                divisions.forEach(div => {
-                    if (div.isOpenForRegistration) {
+                divisions
+                    .filter(div => div.isActive && (div.quota === undefined || div.currentRegistered === undefined || div.currentRegistered < div.quota))
+                    .forEach(div => {
                         const opt = document.createElement('option');
                         opt.value = div.id;
-                        opt.textContent = div.name + ' (Kuota: ' + (div.quota - div.currentRegistered) + ')';
+                        opt.textContent = div.name + (div.quota ? ' (Kuota: ' + (div.quota - (div.currentRegistered || 0)) + ')' : '');
                         select.appendChild(opt);
-                    }
-                });
+                    });
             } catch (err) {
                 select.innerHTML = '<option value="">Gagal memuat divisi</option>';
             }
         }
         loadDivisions();
 
-        document.getElementById('volunteerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const nim = document.getElementById('nim').value;
-            const prodi = document.getElementById('prodi').value;
-            const noHp = document.getElementById('noHp').value;
-            const divisionId = document.getElementById('divisionId').value;
-            const messageDiv = document.getElementById('notif');
-            const submitButton = document.querySelector('button[type="submit"]');
-            messageDiv.textContent = '';
-            messageDiv.className = 'notif';
-            submitButton.disabled = true;
-            submitButton.textContent = 'Mendaftar...';
-            try {
-                const response = await fetch('/api/volunteers', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name,
-                        nim,
-                        prodi,
-                        noHp,
-                        divisionId
-                    })
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('volunteerForm');
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    console.log('Form submit event triggered');
+                    e.preventDefault();
+                    const name = document.getElementById('name').value;
+                    const nim = document.getElementById('nim').value;
+                    const prodi = document.getElementById('prodi').value;
+                    const noHp = document.getElementById('noHp').value;
+                    const divisionId = document.getElementById('divisionId').value;
+                    const messageDiv = document.getElementById('notif');
+                    const submitButton = document.querySelector('button[type="submit"]');
+                    messageDiv.textContent = '';
+                    messageDiv.className = 'notif';
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Mendaftar...';
+                    try {
+                        const response = await fetch('/api/volunteer/add', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                name,
+                                nim,
+                                prodi,
+                                noHp,
+                                divisionId
+                            })
+                        });
+                        if (response.ok) {
+                            window.location.href = 'terimakasih.html';
+                            return;
+                        } else {
+                            const data = await response.json();
+                            messageDiv.textContent = data.message || 'Pendaftaran gagal. Silakan coba lagi.';
+                            messageDiv.classList.add('error');
+                        }
+                    } catch (err) {
+                        messageDiv.textContent = 'Terjadi kesalahan jaringan.';
+                        messageDiv.classList.add('error');
+                        alert('Terjadi kesalahan saat mengirim data. Silakan coba lagi.');
+                    } finally {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Daftar';
+                    }
                 });
-                if (response.ok) {
-                    messageDiv.textContent = 'Pendaftaran berhasil!';
-                    messageDiv.classList.add('success');
-                    document.getElementById('volunteerForm').reset();
-                } else {
-                    const data = await response.json();
-                    messageDiv.textContent = data.message || 'Pendaftaran gagal. Silakan coba lagi.';
-                    messageDiv.classList.add('error');
-                }
-            } catch (err) {
-                messageDiv.textContent = 'Terjadi kesalahan jaringan.';
-                messageDiv.classList.add('error');
-            } finally {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Daftar';
+            } else {
+                alert('Form volunteerForm tidak ditemukan di halaman!');
             }
         });
+
+        // Load event info dari API
+        async function loadEventInfo() {
+            try {
+                const res = await fetch('/api/events');
+                if (!res.ok) return;
+                const events = await res.json();
+                if (!Array.isArray(events) || events.length === 0) return;
+                const event = events[0]; // Ambil event pertama
+                let html = `
+                    <div class="info-card">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <div>
+                            <b>${event.name || 'Acara'}</b><br>
+                            <span><b>Waktu:</b> ${new Date(event.date).toLocaleString('id-ID')}</span><br>
+                            <span><b>Tempat:</b> ${event.location}</span>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('event-info').innerHTML = html;
+            } catch (e) { /* abaikan */ }
+        }
+        loadEventInfo();
     </script>
 </body>
 

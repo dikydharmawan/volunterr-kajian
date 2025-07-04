@@ -7,6 +7,7 @@ export function setEventRoutes(app: Application) {
   router.get('/event', eventController.getEvent);
   router.post('/event', eventController.createOrUpdateEvent);
   router.delete('/event', eventController.deleteEvent);
+  router.post('/event/add', (req, res) => eventController.addEvent(req, res));
 
   app.use('/api', router);
 } 

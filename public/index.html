@@ -262,6 +262,128 @@
             background: #647dee;
             color: #fff;
         }
+        
+        #contact-section {
+            margin-top: 4rem;
+            margin-bottom: 0;
+        }
+        
+        @media (min-height: 600px) {
+            body,
+            html {
+                min-height: 100vh;
+            }
+            .main-container {
+                min-height: 80vh;
+                display: flex;
+                flex-direction: column;
+            }
+            #contact-section {
+                margin-top: auto;
+            }
+        }
+        
+        #contact-footer {
+            width: 100%;
+            background: #fff;
+            border-top: 1.5px solid #e0e0e0;
+            box-shadow: 0 -2px 8px rgba(60, 60, 120, 0.07);
+            padding: 1.5rem 0 1.2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .footer-title {
+            font-size: 1.1rem;
+            color: #7f53ac;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-contact {
+            color: #222;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.7;
+        }
+        
+        .footer-contact i {
+            color: #218c74;
+            margin-right: 0.5rem;
+        }
+        
+        @media (max-width: 600px) {
+            #contact-footer {
+                padding: 1rem 0 0.7rem 0;
+            }
+            .footer-content {
+                padding: 0 0.5rem;
+            }
+        }
+        /* Tabel Daftar Divisi Volunteer */
+        
+        #dynamic-divisions-list table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(60, 60, 120, 0.10);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        #dynamic-divisions-list th,
+        #dynamic-divisions-list td {
+            padding: 1rem 0.7rem;
+            text-align: left;
+        }
+        
+        #dynamic-divisions-list th {
+            background: #f3eaff;
+            color: #7f53ac;
+            font-weight: 700;
+            font-size: 1.08rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        #dynamic-divisions-list tr:nth-child(even) {
+            background: #f7f7fa;
+        }
+        
+        #dynamic-divisions-list tr:hover {
+            background: #eafaf1;
+            transition: background 0.2s;
+        }
+        
+        #dynamic-divisions-list td {
+            font-size: 1.03rem;
+            color: #222;
+        }
+        
+        @media (max-width: 700px) {
+            #dynamic-divisions-list table {
+                font-size: 0.97rem;
+            }
+            #dynamic-divisions-list th,
+            #dynamic-divisions-list td {
+                padding: 0.7rem 0.3rem;
+            }
+        }
+        
+        @media (max-width: 500px) {
+            #dynamic-divisions-list table {
+                min-width: 400px;
+            }
+            #dynamic-divisions-list {
+                overflow-x: auto;
+            }
+        }
     </style>
 </head>
 
@@ -281,21 +403,23 @@
         </div>
 
         <!-- Info Cards (Waktu, Tempat, Peserta) -->
-        <div class="info-cards animate__animated animate__fadeInUp">
-            <div class="info-card">
-                <i class="fa-solid fa-calendar-days info-icon"></i>
-                <div class="info-title">Waktu</div>
-                <div class="info-value">Sabtu, 20 Juli 2024<br>08.00 - 12.00 WIB</div>
-            </div>
-            <div class="info-card">
-                <i class="fa-solid fa-location-dot info-icon"></i>
-                <div class="info-title">Tempat</div>
-                <div class="info-value">Aula Politeknik Negeri Banyuwangi</div>
-            </div>
-            <div class="info-card">
-                <i class="fa-solid fa-users info-icon"></i>
-                <div class="info-title">Peserta</div>
-                <div class="info-value">Civitas Akademika Politeknik Negeri Banyuwangi</div>
+        <div id="dynamic-event-info">
+            <div class="info-cards animate__animated animate__fadeInUp">
+                <div class="info-card">
+                    <i class="fa-solid fa-calendar-days info-icon"></i>
+                    <div class="info-title">Waktu</div>
+                    <div class="info-value">Sabtu, 20 Juli 2024<br>08.00 - 12.00 WIB</div>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-location-dot info-icon"></i>
+                    <div class="info-title">Tempat</div>
+                    <div class="info-value">Aula Politeknik Negeri Banyuwangi</div>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-users info-icon"></i>
+                    <div class="info-title">Peserta</div>
+                    <div class="info-value">Civitas Akademika Politeknik Negeri Banyuwangi</div>
+                </div>
             </div>
         </div>
 
@@ -309,23 +433,73 @@
             </div>
         </div>
 
-        <!-- Section: Pendaftaran Volunteer -->
+        <!-- Section: Daftar Volunteer -->
         <div class="section-title"><i class="fa-solid fa-hand-holding-heart"></i> Pendaftaran Volunteer</div>
         <div class="cta-card animate__animated animate__fadeIn">
             <div class="cta-title">Ingin jadi bagian dari kebaikan?</div>
             <a href="daftar.html" class="cta-btn"><i class="fa-solid fa-user-plus"></i> Daftar Volunteer</a>
         </div>
 
-        <!-- Section: Kontak & Info Lain -->
-        <div class="section-title"><i class="fa-solid fa-address-book"></i> Kontak Panitia</div>
-        <div class="contact-card animate__animated animate__fadeInUp">
-            <i class="fa-solid fa-phone contact-icon"></i>
-            <div class="contact-info">
-                <b>Whatsapp:</b> 085872672506<br>
-                <b>Email:</b>imampoliwangi25@gmail.com
+        <!-- Section: Daftar Divisi -->
+        <div id="dynamic-divisions-list"></div>
+        <!-- Section: Kontak & Info Lain (footer) -->
+        <footer id="contact-footer">
+            <div class="footer-content">
+                <div class="footer-title"><i class="fa-solid fa-address-book"></i> Kontak Panitia</div>
+                <div class="footer-contact">
+                    <i class="fa-solid fa-phone"></i> <b>Whatsapp:</b> 085872672506<br>
+                    <i class="fa-solid fa-envelope"></i> <b>Email:</b> imampoliwangi25@gmail.com
+                </div>
             </div>
-        </div>
+        </footer>
     </div>
+    <script>
+        // Ambil dan render info event (waktu, tempat, dsb)
+        async function loadEventInfo() {
+            try {
+                const res = await fetch('/api/events');
+                if (!res.ok) return;
+                const events = await res.json();
+                if (!Array.isArray(events) || events.length === 0) return;
+                const event = events[0]; // Ambil event pertama
+                let html = `<div class='info-cards animate__animated animate__fadeInUp'>`;
+                html += `<div class='info-card'><i class='fa-solid fa-calendar-days info-icon'></i><div class='info-title'>Waktu</div><div class='info-value'>${new Date(event.date).toLocaleString('id-ID')}</div></div>`;
+                html += `<div class='info-card'><i class='fa-solid fa-location-dot info-icon'></i><div class='info-title'>Tempat</div><div class='info-value'>${event.location}</div></div>`;
+                html += `<div class='info-card'><i class='fa-solid fa-users info-icon'></i><div class='info-title'>Peserta</div><div class='info-value'>Civitas Akademika Politeknik Negeri Banyuwangi</div></div>`;
+                html += `</div>`;
+                document.getElementById('dynamic-event-info').innerHTML = html;
+            } catch (e) { /* abaikan */ }
+        }
+
+        // Ambil dan render daftar divisi aktif dalam bentuk tabel
+        async function loadDivisionsGuest() {
+            try {
+                const res = await fetch('/api/divisions');
+                if (!res.ok) return;
+                const divisions = await res.json();
+                if (!Array.isArray(divisions) || divisions.length === 0) return;
+                let html = `<div class='section-title'><i class='fa-solid fa-users'></i> Daftar Divisi Volunteer</div>`;
+                html += `<div style='overflow-x:auto'><table style='width:100%;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(60,60,120,0.07);margin-bottom:2rem;'>`;
+                html += `<tr><th>Nama Divisi</th><th>Deskripsi</th><th>Kuota</th><th>Status</th></tr>`;
+                divisions.filter(d => d.isActive).forEach(division => {
+                    let status = 'Aktif';
+                    if (division.currentRegistered >= division.quota) status = 'Penuh';
+                    html += `<tr>`;
+                    html += `<td>${division.name}</td>`;
+                    html += `<td>${division.description}</td>`;
+                    html += `<td>${division.quota}</td>`;
+                    html += `<td>${status}</td>`;
+                    html += `</tr>`;
+                });
+                html += `</table></div>`;
+                document.getElementById('dynamic-divisions-list').innerHTML = html;
+            } catch (e) { /* abaikan */ }
+        }
+
+        // Jalankan saat halaman dimuat
+        loadEventInfo();
+        loadDivisionsGuest();
+    </script>
 </body>
 
 </html>

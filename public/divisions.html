@@ -413,9 +413,10 @@
                 if (!response.ok) throw new Error('Gagal memuat data');
 
                 const divisions = await response.json();
+                console.log('Data divisi dari backend:', divisions); // log debug
 
                 if (!Array.isArray(divisions) || divisions.length === 0) {
-                    container.innerHTML = '<div class="empty">Belum ada divisi yang dibuat.</div>';
+                    container.innerHTML = '<div class="empty">Belum ada divisi yang dibuat atau data tidak ditemukan.</div>';
                     return;
                 }
 
@@ -475,7 +476,7 @@
 
             } catch (error) {
                 console.error('Error loading divisions:', error);
-                container.innerHTML = '<div class="empty">Gagal memuat data divisi.</div>';
+                container.innerHTML = '<div class="empty">Gagal memuat data divisi. Cek koneksi atau hubungi admin.</div>';
             }
         }
 
@@ -531,7 +532,7 @@
             };
 
             try {
-                const url = id ? `/api/divisions/${id}` : '/api/divisions';
+                const url = id ? `/api/divisions/${id}` : '/api/division/add';
                 const method = id ? 'PUT' : 'POST';
 
                 const response = await fetch(url, {

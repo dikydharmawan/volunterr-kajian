@@ -1,5 +1,108 @@
 import { Request, Response } from 'express';
 import { db } from '../config/firebase';
+import fs from 'fs';
+import path from 'path';
+
+export async function addDivision(req: Request, res: Response) {
+    try {
+        let { name, description, quota, deadline, requirements, isActive, currentRegistered } = req.body;
+        if (!name || !description || quota === undefined || !deadline) {
+            return res.status(400).json({ message: 'Nama, deskripsi, kuota, dan deadline wajib diisi' });
+        }
+        // Set default values
+        isActive = isActive !== undefined ? isActive : true;
+        quota = quota !== undefined ? quota : 0;
+        currentRegistered = currentRegistered !== undefined ? currentRegistered : 0;
+        const data = { name, description, quota, deadline, requirements: requirements || [], isActive, currentRegistered };
+        const docRef = await db.collection('divisions').add(data);
+        // Simpan ke file JSON lokal
+        const filePath = path.join(__dirname, '../../divisions.json');
+        let divisions = [];
+        if (fs.existsSync(filePath)) {
+            divisions = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        }
+        divisions.push({ id: docRef.id, ...data });
+        fs.writeFileSync(filePath, JSON.stringify(divisions, null, 2));
+        return res.json({ success: true, message: 'Divisi berhasil ditambahkan', id: docRef.id });
+    } catch (error) {
+        console.error('Error adding division:', error);
+        return res.status(500).json({ message: 'Gagal menambah divisi' });
+    }
+}
+
+export async function getAllDivisions(req: Request, res: Response) {
+    try {
+        const snapshot = await db.collection('divisions').get();
+        const divisions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        return res.json(divisions);
+    } catch (error) {
+        console.error('Error getting divisions:', error);
+        return res.status(500).json({ message: 'Gagal mengambil data divisi' });
+    }
+}
+
+export async function getDivision(req: Request, res: Response) {
+    try {
+        const { id } = req.params;
+        const doc = await db.collection('divisions').doc(id).get();
+        if (!doc.exists) {
+            return res.status(404).json({ message: 'Divisi tidak ditemukan' });
+        }
+        return res.json({ id: doc.id, ...doc.data() });
+    } catch (error) {
+        console.error('Error getting division:', error);
+        return res.status(500).json({ message: 'Gagal mengambil data divisi' });
+    }
+}
+
+export async function updateDivision(req: Request, res: Response) {
+    try {
+        const { id } = req.params;
+        const { name, description } = req.body;
+        const docRef = db.collection('divisions').doc(id);
+        const doc = await docRef.get();
+        if (!doc.exists) {
+            return res.status(404).json({ message: 'Divisi tidak ditemukan' });
+        }
+        await docRef.update({ name, description });
+        // Update file JSON lokal
+        const filePath = path.join(__dirname, '../../divisions.json');
+        let divisions = [];
+        if (fs.existsSync(filePath)) {
+            divisions = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        }
+        divisions = divisions.map((d: any) => d.id === id ? { ...d, name, description } : d);
+        fs.writeFileSync(filePath, JSON.stringify(divisions, null, 2));
+        return res.json({ success: true, message: 'Divisi berhasil diupdate' });
+    } catch (error) {
+        console.error('Error updating division:', error);
+        return res.status(500).json({ message: 'Gagal mengupdate divisi' });
+    }
+}
+
+export async function deleteDivision(req: Request, res: Response) {
+    try {
+        const { id } = req.params;
+        const docRef = db.collection('divisions').doc(id);
+        const doc = await docRef.get();
+        if (!doc.exists) {
+            return res.status(404).json({ message: 'Divisi tidak ditemukan' });
+        }
+        await docRef.delete();
+        // Update file JSON lokal
+        const filePath = path.join(__dirname, '../../divisions.json');
+        let divisions = [];
+        if (fs.existsSync(filePath)) {
+            divisions = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        }
+        divisions = divisions.filter((d: any) => d.id !== id);
+        fs.writeFileSync(filePath, JSON.stringify(divisions, null, 2));
+        return res.json({ success: true, message: 'Divisi berhasil dihapus' });
+    } catch (error) {
+        console.error('Error deleting division:', error);
+        return res.status(500).json({ message: 'Gagal menghapus divisi' });
+    }
+}
 
 export class DivisionController {
     private collectionName = 'divisions';

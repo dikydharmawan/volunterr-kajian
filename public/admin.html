@@ -256,8 +256,15 @@
                         password
                     })
                 });
-                const data = await res.json();
-                if (data.success) {
+
+                let data;
+                try {
+                    data = await res.json();
+                } catch {
+                    data = {};
+                }
+
+                if (res.ok && data.success) {
                     errorDiv.textContent = 'Login berhasil';
                     errorDiv.style.background = '#eafaf1';
                     errorDiv.style.color = '#27ae60';
